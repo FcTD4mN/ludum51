@@ -17,7 +17,6 @@ public class Utilities : MonoBehaviour
         onFinish();
     }
 
-
     public static Rect Intersection(Rect rectA, Rect rectB)
     {
         float xMin = Math.Max(rectA.xMin, rectB.xMin);
