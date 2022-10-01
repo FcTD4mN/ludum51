@@ -12,8 +12,8 @@ public class Utilities : MonoBehaviour
 
 
     public static IEnumerator ExecuteAfter(float time, Action onFinish)
-    {
-        yield return new WaitForSeconds(time);
+    { 
+        yield return new WaitForSeconds(time); 
         onFinish();
     }
 
@@ -41,6 +41,18 @@ public class Utilities : MonoBehaviour
         float yMax = Math.Max(rectA.yMax, rectB.yMax);
 
         return new Rect(xMin, yMin, xMax - xMin, yMax - yMin);
+    }
+
+
+    public static float RadToDeg( float value )
+    {
+        return  value * 180/PI;
+    }
+
+
+    public static float DegToRad( float value )
+    {
+        return  value * PI/180;
     }
 
 

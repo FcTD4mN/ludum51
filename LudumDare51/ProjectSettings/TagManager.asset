@@ -25,7 +25,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Projectiles
   - 
   - 
   - 
@@ -46,4 +46,7 @@ TagManager:
     locked: 0
   - name: Death
     uniqueID: 866527335
+    locked: 0
+  - name: Projectiles
+    uniqueID: 2709784925
     locked: 0
