@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Walls
+    uniqueID: 1989243349
+    locked: 0
+  - name: Death
+    uniqueID: 866527335
+    locked: 0
