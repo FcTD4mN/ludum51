@@ -51,10 +51,9 @@ public class Weapon
         if( mIsReloading ) { return; }
 
         mIsReloading = true;
-        mParent.StartCoroutine( Utilities.ExecuteAfter( mBaseReloadTime, ()=>{
+        mParent.StartCoroutine( Utilities.ExecuteAfter( mBaseReloadTime * mShooter.mMultiplierReloadTime, ()=>{
             mBullets = mBaseBullets;
-            mIsReloading = false;
-            Debug.Log( "Reloaded" );
+            mIsReloading = false; 
         }) );
     }
 }

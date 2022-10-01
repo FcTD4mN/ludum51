@@ -22,12 +22,17 @@ public class Rifle : Weapon
         Vector2 direction = to - at;
         float angle = Mathf.Atan2( direction.y, direction.x );
 
+        float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed; 
+        float projectileSize = mBaseArea * mShooter.mMultiplierArea; 
+
         GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile-Rifle");
         GameObject projectile = GameObject.Instantiate( projectilePrefab, mParent.transform.position, Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));
+        projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x, 
+                                                       projectileSize * projectile.transform.localScale.y,
+                                                       projectile.transform.localScale.z );
 
         // Sending toward direction
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-        float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed; 
         Vector2 directionNorm = direction.normalized;
 
         rb.velocity = new Vector2( directionNorm.x * projectileSpeed, directionNorm.y * projectileSpeed );
