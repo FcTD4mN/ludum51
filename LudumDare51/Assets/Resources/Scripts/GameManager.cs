@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private _TestEntity mTest;
-
-    public ProjectileManager mProjectileManager;
+    // ======================================
+    // Members
+    // ======================================
     public static GameManager mInstance;
 
+    // Managers
+    public ProjectileManager mProjectileManager;
+
+    // Objects
+    private PlayerController mThePlayer;
+
+
+    // ======================================
+    // Initialization
+    // ======================================
     void OnEnable()
     {
         // If there is already an gamemanager instance 
@@ -22,27 +32,21 @@ public class GameManager : MonoBehaviour
 
 
 
-
-
-
-        // TMP ====
-        mTest = GameObject.Find("Test").GetComponent<_TestEntity>();
-        Debug.Assert( mTest != null );
+        mThePlayer = GameObject.Find("Player").GetComponent<PlayerController>();
+        Debug.Assert( mThePlayer != null );
     }
 
 
     // ======================================
     // Mouse Events
     // ======================================
-
-
     void OnGUI()
     {
         Event m_Event = Event.current;
 
         if (m_Event.type == EventType.MouseDown)
         {
-            mTest.MouseDown(m_Event);
+            mThePlayer.MouseDown(m_Event);
         }
 
         if (m_Event.type == EventType.MouseDrag)
@@ -51,7 +55,7 @@ public class GameManager : MonoBehaviour
 
         if (m_Event.type == EventType.MouseUp)
         {
-            mTest.MouseUp(m_Event);
+            mThePlayer.MouseUp(m_Event);
         }
     }
 }

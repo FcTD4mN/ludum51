@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, iShooter
 {
     public float moveSpeed = 4f;
     public float collisionOffset = 0.05f;
@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        InitializeIShooter();
     }
 
     // Update is called once per frame
@@ -64,6 +66,8 @@ public class PlayerController : MonoBehaviour
 
             spriteRenderer.flipX = false;
         }
+
+        UpdateIShooter();
     }
 
     private bool TryMove(Vector2 direction)
@@ -89,6 +93,62 @@ public class PlayerController : MonoBehaviour
         {
             return false;
         }
-
     }
+
+
+
+    //========================================
+    // iShooter Members
+    //========================================
+    public Weapon mWeapon { get; set; }
+
+    public float mMultiplierDamage      { get; set; }
+    public float mMultiplierArea        { get; set; }
+    public float mMultiplierReloadTime  { get; set; } 
+    public float mMultiplierFireRate   { get; set; } 
+    public float mMultiplierProjectileSpeed   { get; set; } 
+
+
+    //========================================
+    // iShooter Methods
+    //========================================
+    void InitializeIShooter()
+    {
+        mWeapon = new Knife( this, this );
+        // mWeapon = new Rifle( this, this );
+
+        mMultiplierDamage = 1f;
+        mMultiplierArea = 1f;
+        mMultiplierReloadTime = 1f;
+        mMultiplierFireRate = 1f;
+        mMultiplierProjectileSpeed = 1f;
+    }
+
+    void UpdateIShooter()
+    {
+        if( mIsMouseDown || mMouseWasDown )
+        {
+            mMouseWasDown = false;
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+            this.TryShoot( transform.position, mousePosition ); 
+        } 
+    }
+
+
+    //========================================
+    // Mouse
+    //========================================
+    private bool mIsMouseDown = false;
+    private bool mMouseWasDown = false;
+    public void MouseDown( Event mouseEvent )
+    {
+        mIsMouseDown = true;
+        mMouseWasDown = true;
+    }
+    
+    public void MouseUp( Event mouseEvent ) 
+    {
+        mIsMouseDown = false;
+    }
+
 }
