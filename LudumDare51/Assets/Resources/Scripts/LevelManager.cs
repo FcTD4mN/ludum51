@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -8,6 +7,12 @@ using Ludum51.Player;
 
 public class LevelManager : MonoBehaviour
 {
+    public enum eDeathCause
+    {
+        kDed,
+        kTimeOut
+    }
+
     // Timer for every 10 seconds
     private float mGameTime = 10;
 
@@ -89,7 +94,7 @@ public class LevelManager : MonoBehaviour
                 UpdateTimer();
             }
             else
-                Death();
+                Death( eDeathCause.kTimeOut );
 
         });
         StartCoroutine(timerCoroutine);
@@ -103,7 +108,7 @@ public class LevelManager : MonoBehaviour
     }
 
     // What happens if you run of out time (or die)
-    private void Death()
+    public void Death( eDeathCause cause )
     {
         // Pause le jeu
         Time.timeScale = 0;

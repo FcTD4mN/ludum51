@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayDeathAnimation(Action onAnimationFinish)
     {
-        Utilities.StartAnim(this, animator, "Die", "Player_Death", onAnimationFinish);
+        Utilities.StartAnim( this, animator, "Die", "Player_Death", onAnimationFinish );
     }
 
 
@@ -222,11 +222,12 @@ public class PlayerController : MonoBehaviour
             {
                 mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
                 UpdateHealthBar();
-                if (mKillable.IsDead())
+                if ( mKillable.IsDead() )
                 {
                     PlayDeathAnimation(() =>
                     {
                         gameObject.SetActive(false);
+                        GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
                     });
                 }
 

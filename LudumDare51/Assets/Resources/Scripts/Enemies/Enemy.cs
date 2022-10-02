@@ -68,6 +68,7 @@ public class Enemy : MonoBehaviour
                 pController.PlayDeathAnimation(() =>
                 {
                     thePlayer.gameObject.SetActive(false);
+                    GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
                 });
             }
         }
@@ -79,7 +80,7 @@ public class Enemy : MonoBehaviour
     //========================================
     void OnTriggerEnter2D( Collider2D collider )
     {
-        Projectile projectile = collider.gameObject.GetComponent<Projectile>(); 
+        Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
         if( projectile != null )
         {
@@ -90,14 +91,14 @@ public class Enemy : MonoBehaviour
             {
                 mKillable.Hit( projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage );
                 if( mKillable.IsDead() )
-                { 
-                    mKillable.Die(); 
+                {
+                    mKillable.Die();
                 }
-                
+
                 if( !projectile.mWeapon.mPierce )
                 {
                     GameObject.Destroy( projectile.gameObject );
-                } 
+                }
             }
         }
     }

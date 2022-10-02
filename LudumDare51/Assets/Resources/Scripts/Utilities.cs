@@ -180,7 +180,7 @@ public class Utilities : MonoBehaviour
     public static void StartAnim(MonoBehaviour parent, Animator animator, String triggerName, String animationName, Action onAnimationEnd)
     {
         animator.SetTrigger(triggerName);
-        AnimationClip clip = Utilities.GetAnimationByName(animationName, animator);
-        parent.StartCoroutine(Utilities.ExecuteAfter(clip.length, onAnimationEnd));
+        AnimationClip clip = Utilities.GetAnimationByName( animationName, animator );
+        parent.StartCoroutine( Utilities.ExecuteAfter(clip.length, onAnimationEnd) );
     }
 }
