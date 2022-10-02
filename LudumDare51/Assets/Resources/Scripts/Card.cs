@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ludum51.Player.Stat;
 
-public class Card
+public class Card : ISaveable
 {
     // default ideas
+    public int mId;
     public StatModType mType;
     public PowerUpCategory mPowerUpCategory;
     public float mPoints;
 
-    public Card()
+    public Card(int id)
     {
+        mId = id;
         // Card factory cheap
         int rnd = UnityEngine.Random.Range(1, Enum.GetNames(typeof(PowerUpCategory)).Length);
         mPowerUpCategory = (PowerUpCategory)rnd;
@@ -78,6 +80,38 @@ public class Card
     public String ToCardText()
     {
         return mPowerUpCategory + "\r\n+" + mType + " / " + mPoints;
+    }
+
+    // SAVE DATA - TOJSON
+    public void PopulateSaveData(SaveData dataSet)
+    {
+        // Saving Card Game Data
+        SaveData.CardData cardData = new SaveData.CardData();
+        cardData.id = mId;
+        cardData.value = mPoints;
+        cardData.powerUpCategory = (int)mPowerUpCategory;
+        cardData.type = (int)mType;
+
+        // Push to DeckOfCards 
+        dataSet.mDeckOfCards.Add(cardData);
+    }
+
+    public void LoadFromSaveData(SaveData dataSet)
+    {
+        // To Upgrade maybe
+        foreach (SaveData.CardData cardData in dataSet.mDeckOfCards)
+        {
+            if (cardData.id == mId)
+            {
+
+                mPowerUpCategory = (PowerUpCategory)cardData.powerUpCategory;
+                mType = (StatModType)cardData.type;
+                mPoints = cardData.value;
+                break;
+            }
+        }
+
+        // Prévoir une fonction qui delete si il trouve pas l'id ?
     }
 
 }

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public ProjectileManager mProjectileManager;
     public EnnemyManager mEnnemyManager;
     public LevelManager mLevelManager;
+    public CardManager mCardManager;
 
     // Objects
     public PlayerController mThePlayer;
@@ -46,6 +47,9 @@ public class GameManager : MonoBehaviour
         mLevelManager = transform.Find("LevelManager")?.gameObject.GetComponent<LevelManager>();
         Debug.Assert(mLevelManager != null);
         mLevelManager.Initialize();
+
+        mCardManager = transform.Find("CardManager")?.gameObject.GetComponent<CardManager>();
+        Debug.Assert(mCardManager != null);
     }
 
 
@@ -69,5 +73,17 @@ public class GameManager : MonoBehaviour
         {
             mThePlayer.MouseUp(m_Event);
         }
+    }
+
+    // ======================================
+    // Save Datas
+    // ======================================
+    public void SaveGame()
+    {
+        // Save whatever you want : add it to the list
+        List<ISaveable> saveData = new List<ISaveable>();
+        saveData.Add(mCardManager);
+
+        SaveDataManager.SaveJsonData(mCardManager, "SaveGameData.json");
     }
 }
