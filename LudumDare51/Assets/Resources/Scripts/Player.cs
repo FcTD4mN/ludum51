@@ -16,14 +16,13 @@ namespace Ludum51.Player
 
         public float test { get { return this.getStat(); } }
 
-        void Start()
+        public void Initialize()
         {
             Health.BaseValue = 100;
             Damage.BaseValue = 5;
             Speed.BaseValue = 2;
             PowerUp PU = new PowerUp();
             PU.Equip(this);
-            Debug.Log(test);
         }
 
         void update()

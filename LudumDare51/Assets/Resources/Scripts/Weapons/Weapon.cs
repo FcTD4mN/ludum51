@@ -57,4 +57,12 @@ public class Weapon
             mIsReloading = false; 
         }) );
     }
+
+
+    public void Reset()
+    {
+        mBullets = mBaseBullets;
+        mIsReloading = false; 
+        mIsShootAvailable = true;
+    }
 }

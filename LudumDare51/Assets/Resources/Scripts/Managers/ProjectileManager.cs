@@ -15,5 +15,16 @@ public class ProjectileManager : MonoBehaviour
     public void AddProjectile( GameObject projectile )
     {
         mAllProjectiles.Add( projectile );
-    }  
+    }
+
+
+    public void ClearAllProjectiles()
+    {
+        foreach ( GameObject item in mAllProjectiles )
+        {
+            GameObject.Destroy( item );
+        }
+
+        mAllProjectiles.Clear();
+    }
 }

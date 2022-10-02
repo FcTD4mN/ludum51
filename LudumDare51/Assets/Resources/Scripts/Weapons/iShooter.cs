@@ -59,4 +59,11 @@ public static class ExtensionShooter
         Weapon theWeapon = shooter.mWeapon;
         theWeapon.Reload();
     }
+
+    
+    public static void ResetShooter( this iShooter shooter )
+    {
+        Weapon theWeapon = shooter.mWeapon;
+        theWeapon.Reset();
+    }
 }

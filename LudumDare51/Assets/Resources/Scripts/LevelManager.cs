@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     //Player stuff
     private GameObject mPlayer;
     // Start is called before the first frame update
-    void OnEnable()
+    public void Initialize()
     {
         // Retrieve main camera
         mainCamera = GameObject.Find("Main Camera");
@@ -60,6 +60,7 @@ public class LevelManager : MonoBehaviour
 
         // Start Timer Coroutine
         UpdateTimer();
+        BuildRoom();
     }
 
     void FixedUpdate()
@@ -106,6 +107,26 @@ public class LevelManager : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
+
+    private void BuildRoom()
+    {
+        int currentLevel = 2; // TODO
+        int ennemyCount = 4;
+
+        // Projectiles
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+
+        // Player
+        GameManager.mInstance.mThePlayer.Reset();
+        GameObject area = GameObject.Find( "SpawnAreas/" + currentLevel + "-Player" );
+        Debug.Assert( area != null );
+        GameManager.mInstance.mThePlayer.transform.position = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
+
+        // Ennemies
+        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( currentLevel, ennemyCount );
+    }
+
     public void Retry()
     {
         // Reset timer and hide death screen
@@ -113,10 +134,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         Time.timeScale = 1;
-
-        // Reset Character & Enemies
-        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies(2, 4);
+        BuildRoom();
     }
 
     // Current room finish
@@ -214,8 +232,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         // Handle enemies spawn
-        // GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        // GameManager.mInstance.mEnnemyManager.SpawnEnnemies( 2, 4 );
+        // BuildRoom();
     }
 
 }

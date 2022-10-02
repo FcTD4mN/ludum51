@@ -10,13 +10,12 @@ public class EnnemyManager : MonoBehaviour
 
     public void Initialize()
     {
-        mAllEnnemies = new List<GameObject>();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( 2, 4 );
+        mAllEnnemies = new List<GameObject>(); 
     } 
 
     public void SpawnEnnemies( int level, int count )
     {
-        GameObject area = GameObject.Find( "SpawnAreas/" + level );
+        GameObject area = GameObject.Find( "SpawnAreas/" + level + "-Ennemies" );
         Debug.Assert( area != null );
 
         Rect areaBBox = Utilities.GetBBoxFromTransform( area );
