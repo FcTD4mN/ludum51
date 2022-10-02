@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Ludum51.Player;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
@@ -30,9 +31,10 @@ public class CardManager : MonoBehaviour
         return mCurrentChoice;
     }
 
-    public void EquipCard(int whichCard)
+    public void EquipCard(int whichCard, Player player)
     {
         mDeckOfCards.Add(mCurrentChoice[whichCard]);
+        player.pushCard(mCurrentChoice[whichCard]);
     }
 
     private void ReplaceCard(int whichCard)

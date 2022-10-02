@@ -12,8 +12,8 @@ public class Utilities : MonoBehaviour
 
 
     public static IEnumerator ExecuteAfter(float time, Action onFinish)
-    { 
-        yield return new WaitForSeconds(time); 
+    {
+        yield return new WaitForSeconds(time);
         onFinish();
     }
 
@@ -49,15 +49,15 @@ public class Utilities : MonoBehaviour
     }
 
 
-    public static float RadToDeg( float value )
+    public static float RadToDeg(float value)
     {
-        return  value * 180/PI;
+        return value * 180 / PI;
     }
 
 
-    public static float DegToRad( float value )
+    public static float DegToRad(float value)
     {
-        return  value * PI/180;
+        return value * PI / 180;
     }
 
 
@@ -146,24 +146,24 @@ public class Utilities : MonoBehaviour
     //========================================
     // Animation
     //======================================== 
-    public static AnimationClip GetAnimationByName( String name, Animator animator )
+    public static AnimationClip GetAnimationByName(String name, Animator animator)
     {
-        AnimationClip[] clips  = animator.runtimeAnimatorController.animationClips;
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
 
-        foreach( AnimationClip clip in clips )
+        foreach (AnimationClip clip in clips)
         {
-            if( clip.name == name )
-                return  clip;
+            if (clip.name == name)
+                return clip;
         }
 
-        return  null;
+        return null;
     }
 
 
-    public static void StartAnim( MonoBehaviour parent, Animator animator, String triggerName, String animationName, Action onAnimationEnd )
+    public static void StartAnim(MonoBehaviour parent, Animator animator, String triggerName, String animationName, Action onAnimationEnd)
     {
-        animator.SetTrigger( triggerName );
-        AnimationClip clip = Utilities.GetAnimationByName( animationName, animator );
-        parent.StartCoroutine( Utilities.ExecuteAfter(clip.length, onAnimationEnd ) );
+        animator.SetTrigger(triggerName);
+        AnimationClip clip = Utilities.GetAnimationByName(animationName, animator);
+        parent.StartCoroutine(Utilities.ExecuteAfter(clip.length, onAnimationEnd));
     }
 }

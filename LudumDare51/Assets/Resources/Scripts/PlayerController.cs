@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
+    private LevelManager levelManager;
 
     Vector2 movementInput;
     SpriteRenderer spriteRenderer;
@@ -29,7 +30,9 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         
         mKillable = GetComponent<Killable>();
-        Debug.Assert( mKillable, "No mKillable" );
+        Debug.Assert(mKillable, "No mKillable");
+
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
         mShooter = GetComponent<Shooter>();
         Debug.Assert( mShooter, "No mShooter" );
@@ -37,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
         ResetShooter();
         Reset();
-    } 
+    }
 
 
     // ======================================
@@ -108,6 +111,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D envCollision)
+    {
+        if (envCollision.name == "Tilemap_Door")
+        {
+            levelManager.FinishRoom();
+        }
+    }
 
     // ======================================
     // Life cycle
@@ -115,33 +125,33 @@ public class PlayerController : MonoBehaviour
     public void Reset()
     {
         movementInput = Vector2.zero;
-        gameObject.SetActive( true );
+        gameObject.SetActive(true);
         mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
-        animator.Play( "Player_Idle", 0 ); // animator is null here, don't know why
+        animator.Play("Player_Idle", 0); // animator is null here, don't know why
 
         ResetShooter();
         UpdateHealthBar();
     }
 
 
-    public void PlayDeathAnimation( Action onAnimationFinish )
+    public void PlayDeathAnimation(Action onAnimationFinish)
     {
-        Utilities.StartAnim( this, animator, "Die", "Player_Death", onAnimationFinish );
+        Utilities.StartAnim(this, animator, "Die", "Player_Death", onAnimationFinish);
     }
 
 
     public void UpdateHealthBar()
     {
         float lifeRatio = mKillable.mLife / mKillable.mBaseLife;
-        GameObject healthBar = GameObject.Find( "Canvas/InGamePanel/HealthBar" );
-        GameObject healthBarLabel = GameObject.Find( "Canvas/InGamePanel/HealthBar/label" );
-        Debug.Assert( healthBar && healthBar, "UpdateHealthBar missing object" );
+        GameObject healthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
+        GameObject healthBarLabel = GameObject.Find("Canvas/InGamePanel/HealthBar/label");
+        Debug.Assert(healthBar && healthBar, "UpdateHealthBar missing object");
 
-        healthBar.transform.localScale = new Vector3( lifeRatio, 1, 1 );
+        healthBar.transform.localScale = new Vector3(lifeRatio, 1, 1);
 
-        if( lifeRatio == 0 )
+        if (lifeRatio == 0)
         { lifeRatio = 1; }
-        healthBarLabel.transform.localScale = new Vector3( 1/lifeRatio, 1, 1 );
+        healthBarLabel.transform.localScale = new Vector3(1 / lifeRatio, 1, 1);
         healthBarLabel.GetComponent<TextMeshProUGUI>().text = mKillable.mLife + "/" + mKillable.mBaseLife;
     }
 
@@ -162,7 +172,7 @@ public class PlayerController : MonoBehaviour
 
     void UpdateIShooter()
     {
-        if( mIsMouseDown || mMouseWasDown )
+        if (mIsMouseDown || mMouseWasDown)
         {
             mMouseWasDown = false;
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
@@ -176,13 +186,13 @@ public class PlayerController : MonoBehaviour
     //========================================
     private bool mIsMouseDown = false;
     private bool mMouseWasDown = false;
-    public void MouseDown( Event mouseEvent )
+    public void MouseDown(Event mouseEvent)
     {
         mIsMouseDown = true;
         mMouseWasDown = !GameObject.Find("Canvas").activeSelf; // To avoid shooting while in UI
     }
-    
-    public void MouseUp( Event mouseEvent ) 
+
+    public void MouseUp(Event mouseEvent)
     {
         mIsMouseDown = false;
     }
