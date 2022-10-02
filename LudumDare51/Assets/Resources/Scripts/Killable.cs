@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Killable : MonoBehaviour
 {
+    public float mBaseLife = 100f;
     public float mLife = 100f;
 
 

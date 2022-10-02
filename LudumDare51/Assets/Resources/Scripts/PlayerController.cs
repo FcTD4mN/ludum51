@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour, iShooter
         movementInput = Vector2.zero;
         gameObject.SetActive( true );
         GetComponent<Killable>().mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
-        animator.Play( "Entry", 0 );
+        GetComponent<Animator>().Play( "Player_Idle", 0 ); // animator is null here, don't know why
     }
 
 
