@@ -38,4 +38,22 @@ public class RoomLoader : MonoBehaviour
 
         // Resume game
     }
+
+
+
+
+    public void MenuSelectWeaponClicked_Rifle()
+    {
+
+    }
+
+    public void MenuSelectWeaponClicked_Knife()
+    {
+
+    }
+
+    public void MenuSelectWeaponClicked_Back()
+    {
+
+    }
 }
