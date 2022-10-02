@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
         // Get and initialize all managers
         mProjectileManager = transform.Find("ProjectileManager")?.gameObject.GetComponent<ProjectileManager>();
-        Debug.Assert( mProjectileManager != null );
+        Debug.Assert(mProjectileManager != null);
         mProjectileManager.Initialize();
 
         mEnnemyManager = transform.Find("EnnemyManager")?.gameObject.GetComponent<EnnemyManager>();

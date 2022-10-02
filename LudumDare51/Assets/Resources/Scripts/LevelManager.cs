@@ -223,7 +223,7 @@ public class LevelManager : MonoBehaviour
 
         // Before resume the game : Show Card choice
         ResetTimer();
-        
+
         // Handle enemies spawn
         // BuildRoom();
     }
