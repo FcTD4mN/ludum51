@@ -10,9 +10,10 @@ namespace Ludum51.Player
         public PlayerStat Damage;
         public PlayerStat Speed;
         public PlayerStat WeaponSpeed;
-        public PlayerStat projectile;
+        public PlayerStat Projectile;
         public PlayerStat Cooldown;
         public PlayerStat Zone;
+        private PowerUp PU = new PowerUp();
 
         public float test { get { return this.getStat(); } }
 
@@ -20,9 +21,10 @@ namespace Ludum51.Player
         {
             Health.BaseValue = 100;
             Damage.BaseValue = 5;
-            Speed.BaseValue = 2;
-            PowerUp PU = new PowerUp();
-            PU.Equip(this);
+            WeaponSpeed.BaseValue = 1;
+            Projectile.BaseValue = 1;
+            Cooldown.BaseValue = 1;
+            Zone.BaseValue = 1;
         }
 
         void update()
@@ -32,7 +34,7 @@ namespace Ludum51.Player
 
         public void pushCard(Card card)
         {
-            Debug.Log("wiaejdfqoi");
+            PU.Equip(this, card);
         }
 
         public float getStat()
@@ -47,20 +49,34 @@ namespace Ludum51.Player
     {
         public string Name;
 
-        public void Equip(Player player)
+        public void Equip(Player player, Card card)
         {
             /* player.Strength.AddModifier(new Stat.StatModifier(10, Stat.StatModType.Flat, this)); */
+            switch (card.mPowerUpCategory)
+            {
+                case "Health":
+                    player.Health.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+                case "Damage":
+                    player.Damage.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+                case "Speed":
+                    player.Speed.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+                case "WeaponSpeed":
+                    player.WeaponSpeed.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+                case "Projectile":
+                    player.Projectile.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+                case "Cooldown":
+                    player.Cooldown.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+                case "Zone":
+                    player.Zone.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                    break;
+            }
         }
-
-        /* public receiveCard(float value, StatModType type, int order, object source)
-        {
-            Value = value;
-            Type = type;
-            Order = order;
-            Source = source;
-        }
-
-        public receiveCard(float value, StatModType type) : this(value, type, (int)type, null) { } */
 
         public void Unequip(Player player)
         {
