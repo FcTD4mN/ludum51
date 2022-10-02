@@ -54,26 +54,26 @@ namespace Ludum51.Player
             /* player.Strength.AddModifier(new Stat.StatModifier(10, Stat.StatModType.Flat, this)); */
             switch (card.mPowerUpCategory)
             {
-                case "Health":
-                    player.Health.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.Health:
+                    player.Health.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
-                case "Damage":
-                    player.Damage.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.Damage:
+                    player.Damage.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
-                case "Speed":
-                    player.Speed.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.Speed:
+                    player.Speed.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
-                case "WeaponSpeed":
-                    player.WeaponSpeed.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.WeaponSpeed:
+                    player.WeaponSpeed.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
-                case "Projectile":
-                    player.Projectile.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.Projectile:
+                    player.Projectile.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
-                case "Cooldown":
-                    player.Cooldown.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.Cooldown:
+                    player.Cooldown.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
-                case "Zone":
-                    player.Zone.AddModifier(new Stat.StatModifier(card.mPoint, card.mType, this));
+                case PowerUpCategory.Zone:
+                    player.Zone.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
             }
         }
