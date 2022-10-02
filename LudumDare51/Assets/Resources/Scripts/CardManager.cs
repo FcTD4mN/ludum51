@@ -26,7 +26,6 @@ public class CardManager : MonoBehaviour, ISaveable
         for (int i = 0; i < mNumberOfCards; i++)
         {
             mCurrentChoice[i] = new Card(i + 1);
-            Debug.Log(mCurrentChoice[i].ToString());
         }
 
         return mCurrentChoice;

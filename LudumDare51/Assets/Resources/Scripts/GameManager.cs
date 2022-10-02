@@ -80,7 +80,10 @@ public class GameManager : MonoBehaviour
     // ======================================
     public void SaveGame()
     {
-        // Save whatever you want : (it can be a list of ISaveable or just one Saveable type)
-        SaveDataManager.SaveJsonData(mCardManager, "SaveDeckOfCards.dat");
+        // Save whatever you want : add it to the list
+        List<ISaveable> saveData = new List<ISaveable>();
+        saveData.Add(mCardManager);
+
+        SaveDataManager.SaveJsonData(mCardManager, "SaveGameData.json");
     }
 }
