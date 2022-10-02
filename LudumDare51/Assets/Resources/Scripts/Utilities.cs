@@ -17,6 +17,12 @@ public class Utilities : MonoBehaviour
         onFinish();
     }
 
+
+
+
+    //========================================
+    // Geometry
+    //======================================== 
     public static Rect Intersection(Rect rectA, Rect rectB)
     {
         float xMin = Math.Max(rectA.xMin, rectB.xMin);
@@ -134,5 +140,30 @@ public class Utilities : MonoBehaviour
         var width = edgeVector.x * 2;
         return width;
 
+    }
+
+
+    //========================================
+    // Animation
+    //======================================== 
+    public static AnimationClip GetAnimationByName( String name, Animator animator )
+    {
+        AnimationClip[] clips  = animator.runtimeAnimatorController.animationClips;
+
+        foreach( AnimationClip clip in clips )
+        {
+            if( clip.name == name )
+                return  clip;
+        }
+
+        return  null;
+    }
+
+
+    public static void StartAnim( MonoBehaviour parent, Animator animator, String triggerName, String animationName, Action onAnimationEnd )
+    {
+        animator.SetTrigger( triggerName );
+        AnimationClip clip = Utilities.GetAnimationByName( animationName, animator );
+        parent.StartCoroutine( Utilities.ExecuteAfter(clip.length, onAnimationEnd ) );
     }
 }

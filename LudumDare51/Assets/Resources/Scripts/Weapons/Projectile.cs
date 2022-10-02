@@ -53,7 +53,6 @@ public class Projectile : MonoBehaviour
         if( ennemy != null )
         {
             Killable killable = ennemy.GetComponent<Killable>();
-
             killable.Hit( mWeapon.mBaseDamage * mWeapon.mShooter.mMultiplierDamage );
 
             if( killable.IsDead() )
