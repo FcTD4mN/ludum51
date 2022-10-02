@@ -19,7 +19,7 @@ public class Card
 
         switch (mType)
         {
-            case Type.Life:
+            case Type.Health:
                 // Points between 10 and 100
                 mPoints = Mathf.Round(UnityEngine.Random.Range(10, 100) * 100f) / 100f;
                 break;
@@ -51,7 +51,7 @@ public class Card
 
     public String ToCardText()
     {
-        if (mType == Type.Life)
+        if (mType == Type.Health)
             return mType + "\r\n+" + mPoints;
         else if (mType == Type.Projectile)
             return mType + "\r\n+" + mPoints;
@@ -68,12 +68,13 @@ public class Card
 
     public enum Type
     {
-        Life = 1,
+        Health = 1,
         Speed = 2,
-        Projectile = 3,
-        Cooldown = 4,
-        Zone = 5,
-        Damage = 6
+        WeaponSpeed = 3,
+        Projectile = 4,
+        Cooldown = 5,
+        Zone = 6,
+        Damage = 7
     }
 }
 

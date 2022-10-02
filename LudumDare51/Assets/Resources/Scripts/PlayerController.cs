@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerController : MonoBehaviour, iShooter
 {
     public float moveSpeed = 4f;
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
+    private LevelManager levelManager;
 
     Vector2 movementInput;
     SpriteRenderer spriteRenderer;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour, iShooter
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         InitializeIShooter();
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
     }
 
     // Update is called once per frame
@@ -94,18 +97,24 @@ public class PlayerController : MonoBehaviour, iShooter
         }
     }
 
-
+    private void OnTriggerEnter2D(Collider2D envCollision)
+    {
+        if (envCollision.name == "Tilemap_Door")
+        {
+            levelManager.FinishRoom();
+        }
+    }
 
     //========================================
     // iShooter Members
     //========================================
     public Weapon mWeapon { get; set; }
 
-    public float mMultiplierDamage      { get; set; }
-    public float mMultiplierArea        { get; set; }
-    public float mMultiplierReloadTime  { get; set; } 
-    public float mMultiplierFireRate   { get; set; } 
-    public float mMultiplierProjectileSpeed   { get; set; } 
+    public float mMultiplierDamage { get; set; }
+    public float mMultiplierArea { get; set; }
+    public float mMultiplierReloadTime { get; set; }
+    public float mMultiplierFireRate { get; set; }
+    public float mMultiplierProjectileSpeed { get; set; }
 
 
     //========================================
@@ -114,7 +123,7 @@ public class PlayerController : MonoBehaviour, iShooter
     void InitializeIShooter()
     {
         // mWeapon = new Knife( this, this );
-        mWeapon = new Rifle( this, this );
+        mWeapon = new Rifle(this, this);
 
         mMultiplierDamage = 10f;
         mMultiplierArea = 1f;
@@ -125,12 +134,12 @@ public class PlayerController : MonoBehaviour, iShooter
 
     void UpdateIShooter()
     {
-        if( mIsMouseDown || mMouseWasDown )
+        if (mIsMouseDown || mMouseWasDown)
         {
             mMouseWasDown = false;
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-            this.TryShoot( transform.position, mousePosition ); 
-        } 
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            this.TryShoot(transform.position, mousePosition);
+        }
     }
 
 
@@ -139,13 +148,13 @@ public class PlayerController : MonoBehaviour, iShooter
     //========================================
     private bool mIsMouseDown = false;
     private bool mMouseWasDown = false;
-    public void MouseDown( Event mouseEvent )
+    public void MouseDown(Event mouseEvent)
     {
         mIsMouseDown = true;
         mMouseWasDown = true;
     }
-    
-    public void MouseUp( Event mouseEvent ) 
+
+    public void MouseUp(Event mouseEvent)
     {
         mIsMouseDown = false;
     }

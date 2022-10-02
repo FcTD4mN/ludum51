@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Ludum51.Player;
 
 public class LevelManager : MonoBehaviour
 {
@@ -31,12 +32,15 @@ public class LevelManager : MonoBehaviour
 
     // Ref to main camera
     private GameObject mainCamera;
-
+    //Player stuff
+    private GameObject mPlayer;
     // Start is called before the first frame update
     void OnEnable()
     {
         // Retrieve main camera
         mainCamera = GameObject.Find("Main Camera");
+        // Retrieve main camera
+        mPlayer = GameObject.Find("Player");
 
         // Retrieve GameObjects reference
         RoomLoader = GameObject.Find("RoomLoader");
@@ -164,7 +168,7 @@ public class LevelManager : MonoBehaviour
     void ChooseCard(int whichCard)
     {
         // Equip the card
-        mCardManager.EquipCard(whichCard);
+        mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
 
         // Load + Set-up Next Room
         NextRoom();
