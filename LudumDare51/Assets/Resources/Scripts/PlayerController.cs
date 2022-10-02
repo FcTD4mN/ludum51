@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour, iShooter
         }
         else if (movementInput.x > 0)
         {
-
             spriteRenderer.flipX = false;
         }
 
