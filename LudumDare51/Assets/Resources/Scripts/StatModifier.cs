@@ -1,9 +1,4 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Collections;
-using System;
-
-namespace Ludum51.Player.Stat.Modifier
+namespace Ludum51.Player.Stat
 {
     public enum StatModType
     {
@@ -12,14 +7,14 @@ namespace Ludum51.Player.Stat.Modifier
         PercentMult = 300,
     }
 
-    public class StatModifier : MonoBehaviour
+    public class StatModifier
     {
-        // Start is called before the first frame update
         public readonly float Value;
         public readonly StatModType Type;
         public readonly int Order;
         public readonly object Source;
 
+        // Start is called before the first frame update
         void Start()
         {
 

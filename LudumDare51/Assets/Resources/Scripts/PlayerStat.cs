@@ -1,15 +1,12 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Collections;
-using System.Collections.ObjectModel;
 using System;
-using Ludum51.Player.Stat.Modifier;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Ludum51.Player.Stat
 {
 
     [Serializable]
-    public class PlayerStat : MonoBehaviour
+    public class PlayerStat
     {
         public float BaseValue;
         public float Value
