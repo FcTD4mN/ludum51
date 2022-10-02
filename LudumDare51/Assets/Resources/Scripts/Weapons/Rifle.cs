@@ -28,7 +28,7 @@ public class Rifle : Weapon
         float projectileSize = mBaseArea * mShooter.mMultiplierArea; 
 
         GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Projectile-Rifle");
-        GameObject projectile = GameObject.Instantiate( projectilePrefab, mParent.transform.position, Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));
+        GameObject projectile = GameObject.Instantiate( projectilePrefab, new Vector3( at.x, at.y, -1 ), Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));
         projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x, 
                                                        projectileSize * projectile.transform.localScale.y,
                                                        projectile.transform.localScale.z );

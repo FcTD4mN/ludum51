@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayDeathAnimation(Action onAnimationFinish)
     {
-        Utilities.StartAnim(this, animator, "Die", "Player_Death", onAnimationFinish);
+        Utilities.StartAnim( this, animator, "Die", "Player_Death", onAnimationFinish );
     }
 
 
@@ -216,16 +216,18 @@ public class PlayerController : MonoBehaviour
         if (projectile != null)
         {
             Shooter shooter = projectile.mWeapon.mShooter;
+            bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
 
-            if (shooter.gameObject.GetComponent<Enemy>() != null)
+            if( shooterIsEnnemy || shooter.tag == "BossGun" )
             {
                 mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
                 UpdateHealthBar();
-                if (mKillable.IsDead())
+                if ( mKillable.IsDead() )
                 {
                     PlayDeathAnimation(() =>
                     {
                         gameObject.SetActive(false);
+                        GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
                     });
                 }
 

@@ -27,7 +27,7 @@ public class EnnemyBasicRifle : Weapon
         float projectileSize = mBaseArea * mShooter.mMultiplierArea; 
 
         GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Projectile-EnnemyBasicRifle");
-        GameObject projectile = GameObject.Instantiate( projectilePrefab, mParent.transform.position, Quaternion.Euler(0, 0, 0));
+        GameObject projectile = GameObject.Instantiate( projectilePrefab, new Vector3( at.x, at.y, -1 ), Quaternion.Euler(0, 0, 0));
         projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x, 
                                                        projectileSize * projectile.transform.localScale.y,
                                                        projectile.transform.localScale.z );

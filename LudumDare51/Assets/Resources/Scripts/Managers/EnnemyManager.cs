@@ -13,6 +13,10 @@ public class EnnemyManager : MonoBehaviour
         mAllEnnemies = new List<GameObject>(); 
     } 
 
+
+    //========================================
+    // Spawning
+    //========================================
     public void SpawnEnnemies( int level, int basicCount, int shooterCount )
     {
         GameObject area = GameObject.Find( "SpawnAreas/" + level + "-Ennemies" );
@@ -31,7 +35,23 @@ public class EnnemyManager : MonoBehaviour
         } 
     }
 
+    public void SpawnBoss1()
+    {
+        GameObject area = GameObject.Find( "SpawnAreas/Boss1" );
+        Vector3 location = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
 
+        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/Boss1");
+        GameObject ennemy = GameObject.Instantiate( ennemyPrefab, location, Quaternion.Euler(0, 0, 0) );
+        ennemy.GetComponent<Enemy>().Initialize();
+        ennemy.GetComponent<Boss1AI>().Initialize();
+
+        mAllEnnemies.Add( ennemy.gameObject );
+    }
+
+
+    //========================================
+    // Spawning - PVT
+    //========================================
     private void SpawnStandard( Vector3 position )
     {
         GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/EnemyBasic");
@@ -52,7 +72,6 @@ public class EnnemyManager : MonoBehaviour
         mAllEnnemies.Add( ennemy.gameObject );
     }
 
-
     private Vector3 GetValidRandomPointInArea( Rect area )
     {
         Vector3 playerPosition = GameManager.mInstance.mThePlayer.transform.position;
@@ -70,7 +89,17 @@ public class EnnemyManager : MonoBehaviour
         return  randomPoint;
     }
 
+    private Vector3 GetRandomPoint( Rect inside )
+    {
+        float randomX = Random.Range( inside.xMin, inside.xMax );
+        float randomY = Random.Range( inside.yMin, inside.yMax );
+        return  new Vector3( randomX, randomY, -1 );
+    }
 
+
+    //========================================
+    // Cleaning
+    //========================================
     public void DestroyAllEnnemies()
     {
         foreach ( GameObject item in mAllEnnemies )
@@ -80,10 +109,4 @@ public class EnnemyManager : MonoBehaviour
     }
 
 
-    private Vector3 GetRandomPoint( Rect inside )
-    {
-        float randomX = Random.Range( inside.xMin, inside.xMax );
-        float randomY = Random.Range( inside.yMin, inside.yMax );
-        return  new Vector3( randomX, randomY, -1 );
-    }
 }
