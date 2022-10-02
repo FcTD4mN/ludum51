@@ -22,7 +22,7 @@ public class Weapon
     public bool mIsShootAvailable = true;
 
     public MonoBehaviour mParent;
-    public iShooter mShooter;
+    public Shooter mShooter;
 
     // PRIVATE
     private bool mIsReloading = false;
@@ -31,7 +31,7 @@ public class Weapon
     //========================================
     // Construction
     //========================================
-    public Weapon( MonoBehaviour parent, iShooter shooter )
+    public Weapon( MonoBehaviour parent, Shooter shooter )
     {
         mParent = parent;
         mShooter = shooter;

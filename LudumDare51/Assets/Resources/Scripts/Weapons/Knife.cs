@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Knife : Weapon
 { 
-    public Knife( MonoBehaviour parent, iShooter shooter ) : base( parent, shooter )
+    public Knife( MonoBehaviour parent, Shooter shooter ) : base( parent, shooter )
     { 
         mBaseDamage = 4f;
         mBaseArea = 1f;

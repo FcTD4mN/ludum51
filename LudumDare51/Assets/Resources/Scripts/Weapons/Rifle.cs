@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rifle : Weapon
 {
-    public Rifle( MonoBehaviour parent, iShooter shooter ) : base( parent, shooter )
+    public Rifle( MonoBehaviour parent, Shooter shooter ) : base( parent, shooter )
     { 
         mBaseDamage = 2f;
         mBaseArea = 1f;

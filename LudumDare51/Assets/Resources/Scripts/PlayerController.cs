@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem; 
 using TMPro;
 
-public class PlayerController : MonoBehaviour, iShooter
+public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 4f;
     public float collisionOffset = 0.05f;
@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour, iShooter
     Rigidbody2D rb;
     Animator animator;
     Killable mKillable;
+    Shooter mShooter;
 
     // ======================================
     // Unity Methods
@@ -26,10 +27,15 @@ public class PlayerController : MonoBehaviour, iShooter
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
         mKillable = GetComponent<Killable>();
         Debug.Assert( mKillable, "No mKillable" );
 
-        InitializeIShooter();
+        mShooter = GetComponent<Shooter>();
+        Debug.Assert( mShooter, "No mShooter" );
+        mShooter.SetWeapon( new Rifle( this, mShooter ) );
+
+        ResetShooter();
         Reset();
     } 
 
@@ -113,7 +119,7 @@ public class PlayerController : MonoBehaviour, iShooter
         mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
         animator.Play( "Player_Idle", 0 ); // animator is null here, don't know why
 
-        this.ResetShooter();
+        ResetShooter();
         UpdateHealthBar();
     }
 
@@ -141,30 +147,17 @@ public class PlayerController : MonoBehaviour, iShooter
 
 
     //========================================
-    // iShooter Members
-    //========================================
-    public Weapon mWeapon { get; set; }
-
-    public float mMultiplierDamage      { get; set; }
-    public float mMultiplierArea        { get; set; }
-    public float mMultiplierReloadTime  { get; set; } 
-    public float mMultiplierFireRate   { get; set; } 
-    public float mMultiplierProjectileSpeed   { get; set; } 
-
-
-    //========================================
     // iShooter Methods
     //========================================
-    void InitializeIShooter()
-    {
-        // mWeapon = new Knife( this, this );
-        mWeapon = new Rifle( this, this );
+    void ResetShooter()
+    { 
+        mShooter.ResetShooter();
 
-        mMultiplierDamage = 10f;
-        mMultiplierArea = 1f;
-        mMultiplierReloadTime = 1f;
-        mMultiplierFireRate = 1f;
-        mMultiplierProjectileSpeed = 1f;
+        mShooter.mMultiplierDamage = 10f;
+        mShooter.mMultiplierArea = 1f;
+        mShooter.mMultiplierReloadTime = 1f;
+        mShooter.mMultiplierFireRate = 1f;
+        mShooter.mMultiplierProjectileSpeed = 1f;    
     }
 
     void UpdateIShooter()
@@ -173,7 +166,7 @@ public class PlayerController : MonoBehaviour, iShooter
         {
             mMouseWasDown = false;
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-            this.TryShoot( transform.position, mousePosition ); 
+            mShooter.TryShoot( transform.position, mousePosition ); 
         } 
     }
 
