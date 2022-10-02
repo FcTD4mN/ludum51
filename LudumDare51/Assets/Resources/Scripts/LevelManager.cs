@@ -10,6 +10,9 @@ public class LevelManager : MonoBehaviour
     // Timer for every 10 seconds
     private float mGameTime = 10;
 
+    // Current Room Number
+    private int currentRoom = 1;
+
     // UI Elements
     private GameObject canvas;
     private GameObject cardCanvas;
@@ -118,10 +121,10 @@ public class LevelManager : MonoBehaviour
 
         // Load Animation
         RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
-        rL.LoadNextRoom(canvas, cardCanvas, false);
+        rL.LoadNextRoom();
 
         // Load Room Features
-        StartCoroutine(LoadRoom(rL.transitionTime));
+        StartCoroutine(FinishRoomCoroutine(rL.transitionTime));
     }
 
     // Show Card Panel
@@ -161,18 +164,25 @@ public class LevelManager : MonoBehaviour
         // Equip the card
         mCardManager.EquipCard(whichCard);
 
+        // Load + Set-up Next Room
+        NextRoom();
+
         // Load Animation
         RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
-        rL.LoadNextRoom(canvas, cardCanvas, true);
+        rL.LoadNextRoom();
 
-        // Move camera
+        // Resume timer etc...
+        StartCoroutine(NextRoomCoroutine(rL.transitionTime));
+    }
+
+    void NextRoom()
+    {
+        currentRoom += 1;
         mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 28, 0f, -10f);
-        cardCanvas.SetActive(false);
-        canvas.SetActive(true);
     }
 
     // Coroutines :
-    public IEnumerator LoadRoom(float waitingTime)
+    public IEnumerator FinishRoomCoroutine(float waitingTime)
     {
         // Hide IGCanvas
         canvas.SetActive(false);
@@ -182,6 +192,20 @@ public class LevelManager : MonoBehaviour
 
         // Before resume the game : Show Card choice
         ShowCardChoices();
+    }
+
+    public IEnumerator NextRoomCoroutine(float waitingTime)
+    {
+        cardCanvas.SetActive(false);
+        mGameTime = 10;
+        mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(mGameTime);
+        canvas.SetActive(true);
+
+        // Wait
+        yield return new WaitForSeconds(waitingTime);
+
+        // Before resume the game : Show Card choice
+        ResetTimer();
     }
 
 }

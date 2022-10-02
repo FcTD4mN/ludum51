@@ -7,12 +7,12 @@ public class RoomLoader : MonoBehaviour
     public Animator transition;
     public float transitionTime;
 
-    public void LoadNextRoom(GameObject canvas, GameObject cardCanvas, bool activate)
+    public void LoadNextRoom()
     {
-        StartCoroutine(LoadRoom(canvas, cardCanvas, activate));
+        StartCoroutine(LoadRoom());
     }
 
-    public IEnumerator LoadRoom(GameObject canvas, GameObject cardCanvas, bool activate)
+    public IEnumerator LoadRoom()
     {
         // Play animation
         transition.SetTrigger("Start");
@@ -22,7 +22,5 @@ public class RoomLoader : MonoBehaviour
 
         // Load next room (move camera)
         transition.SetTrigger("End");
-        cardCanvas.SetActive(!activate);
-        canvas.SetActive(activate);
     }
 }
