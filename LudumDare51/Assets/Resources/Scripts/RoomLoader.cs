@@ -7,12 +7,17 @@ public class RoomLoader : MonoBehaviour
     public Animator transition;
     public float transitionTime;
 
-    public void LoadNextRoom()
+    public void FinishCurrentRoom()
     {
-        StartCoroutine(LoadRoom());
+        StartCoroutine(FinishRoomAnimation());
     }
 
-    public IEnumerator LoadRoom()
+    public void LoadNextRoom()
+    {
+        StartCoroutine(NextRoomAnimation());
+    }
+
+    public IEnumerator FinishRoomAnimation()
     {
         // Play animation
         transition.SetTrigger("Start");
@@ -21,6 +26,17 @@ public class RoomLoader : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         // Load next room (move camera)
+    }
+
+    public IEnumerator NextRoomAnimation()
+    {
+        // Play animation
         transition.SetTrigger("End");
+
+        // Wait
+        yield return new WaitForSeconds(transitionTime);
+
+        // Load next room (move camera)
+        // transition.SetTrigger("End");
     }
 }

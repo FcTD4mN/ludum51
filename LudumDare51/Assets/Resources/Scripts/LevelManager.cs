@@ -121,10 +121,10 @@ public class LevelManager : MonoBehaviour
 
         // Load Animation
         RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
-        rL.LoadNextRoom();
+        rL.FinishCurrentRoom();
 
         // Load Room Features
-        StartCoroutine(FinishRoomCoroutine(rL.transitionTime));
+        StartCoroutine(FinishRoomCoroutine(rL.transitionTime / 2));
     }
 
     // Show Card Panel
@@ -172,7 +172,7 @@ public class LevelManager : MonoBehaviour
         rL.LoadNextRoom();
 
         // Resume timer etc...
-        StartCoroutine(NextRoomCoroutine(rL.transitionTime));
+        StartCoroutine(NextRoomCoroutine(rL.transitionTime / 2));
     }
 
     void NextRoom()
