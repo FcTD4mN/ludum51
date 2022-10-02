@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour, iShooter
         mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
         animator.Play( "Player_Idle", 0 ); // animator is null here, don't know why
 
+        this.ResetShooter();
         UpdateHealthBar();
     }
 
@@ -185,7 +186,7 @@ public class PlayerController : MonoBehaviour, iShooter
     public void MouseDown( Event mouseEvent )
     {
         mIsMouseDown = true;
-        mMouseWasDown = true;
+        mMouseWasDown = !GameObject.Find("Canvas").activeSelf; // To avoid shooting while in UI
     }
     
     public void MouseUp( Event mouseEvent ) 

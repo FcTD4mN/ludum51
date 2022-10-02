@@ -109,13 +109,16 @@ public class LevelManager : MonoBehaviour
         int currentLevel = 2; // TODO
         int ennemyCount = 4;
 
+        // Projectiles
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
 
-        // Set Character & Enemies
+        // Player
         GameManager.mInstance.mThePlayer.Reset();
         GameObject area = GameObject.Find( "SpawnAreas/" + currentLevel + "-Player" );
         Debug.Assert( area != null );
         GameManager.mInstance.mThePlayer.transform.position = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
 
+        // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
         GameManager.mInstance.mEnnemyManager.SpawnEnnemies( currentLevel, ennemyCount );
     }
