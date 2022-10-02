@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class LevelManager : MonoBehaviour
@@ -11,7 +12,9 @@ public class LevelManager : MonoBehaviour
 
     // UI Elements
     private GameObject canvas;
+    private GameObject cardCanvas;
     private GameObject gameOverPanel;
+    private GameObject mIgPanel;
     private GameObject mTimer;
 
     // Reference to Room Loader (Animation)
@@ -20,20 +23,35 @@ public class LevelManager : MonoBehaviour
     // keep a copy of the executing coroutine (timer)
     private IEnumerator timerCoroutine;
 
+    // Ref to CardManager
+    private CardManager mCardManager;
+
+    // Ref to main camera
+    private GameObject mainCamera;
+
     // Start is called before the first frame update
     void OnEnable()
     {
+        // Retrieve main camera
+        mainCamera = GameObject.Find("Main Camera");
+
         // Retrieve GameObjects reference
         RoomLoader = GameObject.Find("RoomLoader");
+        mCardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
 
-        // Retrieve Timer UI element
+        // Retrieve UI Elements
+        cardCanvas = GameObject.Find("CardCanvas");
+        canvas = GameObject.Find("Canvas");
+        cardCanvas.SetActive(false);
         gameOverPanel = GameObject.Find("GameOverPanel").gameObject;
         gameOverPanel.SetActive(false);
-        canvas = canvas = GameObject.Find("Canvas");
-        mTimer = canvas.transform.Find("Chrono").gameObject;
+        mIgPanel = GameObject.Find("InGamePanel").gameObject;
+
+        // Init Timer
+        mTimer = mIgPanel.transform.Find("Chrono").gameObject;
         mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(mGameTime);
 
-        // Timer Coroutine
+        // Start Timer Coroutine
         UpdateTimer();
     }
 
@@ -92,31 +110,78 @@ public class LevelManager : MonoBehaviour
         // Reset Character & Enemies : TO-DO
     }
 
-    // Set-up & Load Next Room
-    public void NextRoom()
+    // Current room finish
+    public void FinishRoom()
     {
         // Stop Timer
         StopCoroutine(timerCoroutine);
-        mTimer.SetActive(false);
 
         // Load Animation
         RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
-        rL.LoadNextRoom(1);
+        rL.LoadNextRoom(canvas, cardCanvas, false);
 
         // Load Room Features
         StartCoroutine(LoadRoom(rL.transitionTime));
     }
 
+    // Show Card Panel
+    private void ShowCardChoices()
+    {
+        // Generate Cards
+        Card[] cCards = mCardManager.SpawnCard();
+
+        // Show panel
+        cardCanvas.SetActive(true);
+
+        // Create as many Prefabas as there is Cards
+        int posX = -250;
+        for (int i = 0; i < cCards.Length; i++)
+        {
+            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/CardTemplate");
+            GameObject card = GameObject.Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            card.transform.SetParent(cardCanvas.transform);
+
+            RectTransform uiTransform = card.GetComponent<RectTransform>();
+            uiTransform.anchoredPosition = new Vector2(posX, 0);
+            posX += 250;
+
+            Button btn = card.GetComponent<Button>();
+            // Text cText = btn.GetComponent<Text>();
+            TextMeshProUGUI btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
+            btnText.text = cCards[i].ToCardText();
+
+            int iCopy = i;
+            btn.onClick.AddListener(() => ChooseCard(iCopy));
+        }
+
+    }
+
+    void ChooseCard(int whichCard)
+    {
+        // Equip the card
+        mCardManager.EquipCard(whichCard);
+
+        // Load Animation
+        RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
+        rL.LoadNextRoom(canvas, cardCanvas, true);
+
+        // Move camera
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 28, 0f, -10f);
+        cardCanvas.SetActive(false);
+        canvas.SetActive(true);
+    }
+
+    // Coroutines :
     public IEnumerator LoadRoom(float waitingTime)
     {
+        // Hide IGCanvas
+        canvas.SetActive(false);
+
         // Wait
         yield return new WaitForSeconds(waitingTime);
 
-        // Reset Timer
-        ResetTimer();
-        mTimer.SetActive(true);
-
-        // Handle enemies spawn - TO DO
+        // Before resume the game : Show Card choice
+        ShowCardChoices();
     }
 
 }
