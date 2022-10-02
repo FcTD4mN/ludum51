@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     // Managers
     public ProjectileManager mProjectileManager;
     public EnnemyManager mEnnemyManager;
+    public LevelManager mLevelManager;
 
     // Objects
     public PlayerController mThePlayer;
@@ -26,8 +27,11 @@ public class GameManager : MonoBehaviour
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
         
-        mThePlayer = GameObject.Find("Player").GetComponent<PlayerController>();
-        Debug.Assert( mThePlayer != null );
+        GameObject player = GameObject.Find("Player");
+        mThePlayer = player.GetComponent<PlayerController>();
+        Debug.Assert( mThePlayer && player, "Can't find player" );
+        player.GetComponent<Ludum51.Player.Player>().Initialize();
+        mThePlayer.Initialize();
 
 
         // Get and initialize all managers
@@ -38,6 +42,10 @@ public class GameManager : MonoBehaviour
         mEnnemyManager = transform.Find("EnnemyManager")?.gameObject.GetComponent<EnnemyManager>();
         Debug.Assert( mEnnemyManager != null );
         mEnnemyManager.Initialize(); 
+
+        mLevelManager = transform.Find("LevelManager")?.gameObject.GetComponent<LevelManager>();
+        Debug.Assert( mLevelManager != null );
+        mLevelManager.Initialize(); 
     }
 
 

@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
     private GameObject mainCamera;
 
     // Start is called before the first frame update
-    void OnEnable()
+    public void Initialize()
     {
         // Retrieve main camera
         mainCamera = GameObject.Find("Main Camera");

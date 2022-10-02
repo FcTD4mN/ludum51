@@ -11,14 +11,13 @@ namespace Ludum51.Player
         public PlayerStat Dexterity;
         public float test { get { return this.getStat(); } }
 
-        void Start()
+        public void Initialize()
         {
             Health.BaseValue = 100;
             Strength.BaseValue = 5;
             Dexterity.BaseValue = 2;
             PowerUp PU = new PowerUp();
             PU.Equip(this);
-            Debug.Log(test);
         }
 
         void update()

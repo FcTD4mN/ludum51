@@ -61,6 +61,7 @@ public class Enemy : MonoBehaviour
 
             killable.Hit( mBaseDamage );
             // TODO: connect life
+            pController.UpdateHealthBar();
 
             if( killable.IsDead() )
             {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem; 
+using TMPro;
 
 public class PlayerController : MonoBehaviour, iShooter
 {
@@ -14,21 +15,28 @@ public class PlayerController : MonoBehaviour, iShooter
     SpriteRenderer spriteRenderer;
     Rigidbody2D rb;
     Animator animator;
+    Killable mKillable;
+
+    // ======================================
+    // Unity Methods
+    // ======================================
     // Start is called before the first frame update
-    void Start()
+    public void Initialize()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        mKillable = GetComponent<Killable>();
+        Debug.Assert( mKillable, "No mKillable" );
 
         InitializeIShooter();
-    }
+        Reset();
+    } 
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
+    // ======================================
+    // Input
+    // ======================================
     void OnMove(InputValue movementValue)
     {
         movementInput = movementValue.Get<Vector2>();
@@ -93,7 +101,21 @@ public class PlayerController : MonoBehaviour, iShooter
             return false;
         }
     }
- 
+
+
+    // ======================================
+    // Life cycle
+    // ======================================
+    public void Reset()
+    {
+        movementInput = Vector2.zero;
+        gameObject.SetActive( true );
+        mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
+        animator.Play( "Player_Idle", 0 ); // animator is null here, don't know why
+
+        UpdateHealthBar();
+    }
+
 
     public void PlayDeathAnimation( Action onAnimationFinish )
     {
@@ -101,14 +123,20 @@ public class PlayerController : MonoBehaviour, iShooter
     }
 
 
-    public void Reset()
+    public void UpdateHealthBar()
     {
-        movementInput = Vector2.zero;
-        gameObject.SetActive( true );
-        GetComponent<Killable>().mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
-        GetComponent<Animator>().Play( "Player_Idle", 0 ); // animator is null here, don't know why
-    }
+        float lifeRatio = mKillable.mLife / mKillable.mBaseLife;
+        GameObject healthBar = GameObject.Find( "Canvas/InGamePanel/HealthBar" );
+        GameObject healthBarLabel = GameObject.Find( "Canvas/InGamePanel/HealthBar/label" );
+        Debug.Assert( healthBar && healthBar, "UpdateHealthBar missing object" );
 
+        healthBar.transform.localScale = new Vector3( lifeRatio, 1, 1 );
+
+        if( lifeRatio == 0 )
+        { lifeRatio = 1; }
+        healthBarLabel.transform.localScale = new Vector3( 1/lifeRatio, 1, 1 );
+        healthBarLabel.GetComponent<TextMeshProUGUI>().text = mKillable.mLife + "/" + mKillable.mBaseLife;
+    }
 
 
     //========================================
