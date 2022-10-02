@@ -118,13 +118,13 @@ public class LevelManager : MonoBehaviour
 
         // Player
         GameManager.mInstance.mThePlayer.Reset();
-        GameObject area = GameObject.Find( "SpawnAreas/" + currentLevel + "-Player" );
-        Debug.Assert( area != null );
-        GameManager.mInstance.mThePlayer.transform.position = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
+        GameObject area = GameObject.Find("SpawnAreas/" + currentLevel + "-Player");
+        Debug.Assert(area != null);
+        GameManager.mInstance.mThePlayer.transform.position = new Vector3(area.transform.position.x, area.transform.position.y, -1);
 
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( currentLevel, ennemyCount );
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies(currentLevel, ennemyCount);
     }
 
     public void Retry()
@@ -164,7 +164,7 @@ public class LevelManager : MonoBehaviour
         int posX = -250;
         for (int i = 0; i < cCards.Length; i++)
         {
-            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Cards/Card" + cCards[i].getType() + "Template");
+            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Cards/CardTemplate");
             GameObject card = GameObject.Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             card.transform.SetParent(cardCanvas.transform);
 

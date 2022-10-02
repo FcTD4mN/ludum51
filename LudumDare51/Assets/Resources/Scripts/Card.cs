@@ -72,7 +72,7 @@ public class Card
 
     public override String ToString()
     {
-        return "Type : " + mPowerUpCategory + " / Points : " + mPoints;
+        return "Power Up : " + mPowerUpCategory + " / Type : " + mType + " / Points : " + mPoints;
     }
 
     public String ToCardText()
