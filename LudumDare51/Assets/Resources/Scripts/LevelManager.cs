@@ -112,7 +112,7 @@ public class LevelManager : MonoBehaviour
 
         // Reset Character & Enemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( 2, 4 );
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies(2, 4);
     }
 
     // Current room finish
@@ -208,7 +208,7 @@ public class LevelManager : MonoBehaviour
 
         // Before resume the game : Show Card choice
         ResetTimer();
-        
+
         // Handle enemies spawn
         // GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
         // GameManager.mInstance.mEnnemyManager.SpawnEnnemies( 2, 4 );

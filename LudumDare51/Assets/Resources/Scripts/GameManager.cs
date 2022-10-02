@@ -25,19 +25,19 @@ public class GameManager : MonoBehaviour
         // If there is already an gamemanager instance 
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
-        
+
         mThePlayer = GameObject.Find("Player").GetComponent<PlayerController>();
-        Debug.Assert( mThePlayer != null );
+        Debug.Assert(mThePlayer != null);
 
 
         // Get and initialize all managers
         mProjectileManager = transform.Find("ProjectileManager")?.gameObject.GetComponent<ProjectileManager>();
-        Debug.Assert( mProjectileManager != null );
+        Debug.Assert(mProjectileManager != null);
         mProjectileManager.Initialize();
 
         mEnnemyManager = transform.Find("EnnemyManager")?.gameObject.GetComponent<EnnemyManager>();
-        Debug.Assert( mEnnemyManager != null );
-        mEnnemyManager.Initialize(); 
+        Debug.Assert(mEnnemyManager != null);
+        mEnnemyManager.Initialize();
     }
 
 
