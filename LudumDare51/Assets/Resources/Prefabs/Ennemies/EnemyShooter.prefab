@@ -87,3 +87,15 @@ MonoBehaviour:
   mMultiplierReloadTime: 2
   mMultiplierFireRate: 1
   mMultiplierProjectileSpeed: 1
+--- !u!114 &6610902183609925362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7745766016311126414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642d25c3e1af54e419f5ccc8210e9341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

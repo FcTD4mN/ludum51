@@ -13,31 +13,61 @@ public class EnnemyManager : MonoBehaviour
         mAllEnnemies = new List<GameObject>(); 
     } 
 
-    public void SpawnEnnemies( int level, int count )
+    public void SpawnEnnemies( int level, int basicCount, int shooterCount )
     {
         GameObject area = GameObject.Find( "SpawnAreas/" + level + "-Ennemies" );
         Debug.Assert( area != null );
 
         Rect areaBBox = Utilities.GetBBoxFromTransform( area );
+ 
+        for( int i = 0; i < basicCount; ++i )
+        { 
+            SpawnStandard( GetValidRandomPointInArea( areaBBox ) );
+        }
+
+        for( int i = 0; i < shooterCount; ++i )
+        { 
+            SpawnShooter( GetValidRandomPointInArea( areaBBox ) );
+        } 
+    }
+
+
+    private void SpawnStandard( Vector3 position )
+    {
+        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/EnemyBasic");
+        GameObject ennemy = GameObject.Instantiate( ennemyPrefab, position, Quaternion.Euler(0, 0, 0) );
+        ennemy.GetComponent<Enemy>().Initialize();
+
+        mAllEnnemies.Add( ennemy.gameObject );
+    }
+
+
+    private void SpawnShooter( Vector3 position )
+    {
+        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/EnemyShooter");
+        GameObject ennemy = GameObject.Instantiate( ennemyPrefab, position, Quaternion.Euler(0, 0, 0) );
+        ennemy.GetComponent<EnnemyShooterIA>().Initialize();
+        ennemy.GetComponent<Enemy>().Initialize();
+
+        mAllEnnemies.Add( ennemy.gameObject );
+    }
+
+
+    private Vector3 GetValidRandomPointInArea( Rect area )
+    {
         Vector3 playerPosition = GameManager.mInstance.mThePlayer.transform.position;
         Tilemap tileMapPoison = GameObject.Find( "Grid/Tilemap_Poison" ).GetComponent<Tilemap>();
- 
-        for( int i = 0; i < count; ++i )
-        { 
-            Vector3 randomPoint = new Vector3( 0, 0, 0 );
-            bool isOk = false;
-            while( !isOk )
-            {
-                randomPoint = GetRandomPoint( areaBBox );
-                isOk = (playerPosition - randomPoint).magnitude > mMinDistanceFromPlayer;
-                isOk = isOk && tileMapPoison.GetTile( new Vector3Int( (int)randomPoint.x, (int)randomPoint.y, 0 ) ) == null;
-            }
 
-            GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/EnemyBasic");
-            GameObject ennemy = GameObject.Instantiate( ennemyPrefab, randomPoint, Quaternion.Euler(0, 0, 0) );
-
-            mAllEnnemies.Add( ennemy.gameObject );
+        Vector3 randomPoint = new Vector3( 0, 0, 0 );
+        bool isOk = false;
+        while( !isOk )
+        {
+            randomPoint = GetRandomPoint( area );
+            isOk = (playerPosition - randomPoint).magnitude > mMinDistanceFromPlayer;
+            isOk = isOk && tileMapPoison.GetTile( new Vector3Int( (int)randomPoint.x, (int)randomPoint.y, 0 ) ) == null;
         }
+
+        return  randomPoint;
     }
 
 
