@@ -140,7 +140,7 @@ public class LevelManager : MonoBehaviour
         int posX = -250;
         for (int i = 0; i < cCards.Length; i++)
         {
-            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/CardTemplate");
+            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Cards/Card" + cCards[i].getType() + "Template");
             GameObject card = GameObject.Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             card.transform.SetParent(cardCanvas.transform);
 
