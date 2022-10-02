@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {  
     public float mSpeed = 1f;
+    public float mBaseDamage = 1f;
 
     void Start()
     { 
@@ -20,5 +21,27 @@ public class Enemy : MonoBehaviour
         float finalSpeed = Time.fixedDeltaTime * mSpeed;
         
         rb.velocity = new Vector2( direction.x * finalSpeed, direction.y * finalSpeed );
+    }
+
+
+    void OnCollisionStay2D( Collision2D collision )
+    { 
+        Ludum51.Player.Player thePlayer = collision.collider.gameObject.GetComponent<Ludum51.Player.Player>();
+
+        if( thePlayer != null )
+        {
+            Killable killable = thePlayer.GetComponent<Killable>(); 
+            PlayerController pController = thePlayer.GetComponent< PlayerController >();
+
+            killable.Hit( mBaseDamage );
+            // TODO: connect life
+
+            if( killable.IsDead() )
+            {
+                pController.PlayDeathAnimation( ()=> {
+                    thePlayer.gameObject.SetActive( false );
+                });
+            }
+        }
     }
 }

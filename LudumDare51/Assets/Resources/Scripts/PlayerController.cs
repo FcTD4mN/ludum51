@@ -1,7 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem; 
 
 public class PlayerController : MonoBehaviour, iShooter
 {
@@ -92,6 +92,21 @@ public class PlayerController : MonoBehaviour, iShooter
         {
             return false;
         }
+    }
+ 
+
+    public void PlayDeathAnimation( Action onAnimationFinish )
+    {
+        Utilities.StartAnim( this, animator, "Die", "Player_Death", onAnimationFinish );
+    }
+
+
+    public void Reset()
+    {
+        movementInput = Vector2.zero;
+        gameObject.SetActive( true );
+        GetComponent<Killable>().mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
+        animator.Play( "Entry", 0 );
     }
 
 
