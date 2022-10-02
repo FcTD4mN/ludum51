@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     private LevelManager levelManager;
+    private GameObject mHealthBar;
 
     Vector2 movementInput;
     SpriteRenderer spriteRenderer;
@@ -28,15 +29,17 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
+
         mKillable = GetComponent<Killable>();
         Debug.Assert(mKillable, "No mKillable");
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
         mShooter = GetComponent<Shooter>();
-        Debug.Assert( mShooter, "No mShooter" );
-        mShooter.SetWeapon( new Rifle( this, mShooter ) );
+        Debug.Assert(mShooter, "No mShooter");
+        mShooter.SetWeapon(new Rifle(this, mShooter));
+
+        mHealthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
 
         ResetShooter();
         Reset();
@@ -117,9 +120,9 @@ public class PlayerController : MonoBehaviour
         {
             levelManager.FinishRoom();
         }
-        else if( envCollision.gameObject.GetComponent<Projectile>() )
+        else if (envCollision.gameObject.GetComponent<Projectile>())
         {
-            OnProjectileHit( envCollision );
+            OnProjectileHit(envCollision);
         }
     }
 
@@ -147,11 +150,12 @@ public class PlayerController : MonoBehaviour
     public void UpdateHealthBar()
     {
         float lifeRatio = mKillable.mLife / mKillable.mBaseLife;
-        GameObject healthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
-        GameObject healthBarLabel = GameObject.Find("Canvas/InGamePanel/HealthBar/label");
-        Debug.Assert(healthBar && healthBar, "UpdateHealthBar missing object");
+        // GameObject healthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
+        GameObject healthBarLabel = mHealthBar.transform.Find("label").gameObject;
 
-        healthBar.transform.localScale = new Vector3(lifeRatio, 1, 1);
+        Debug.Assert(mHealthBar && mHealthBar, "UpdateHealthBar missing object");
+
+        mHealthBar.transform.localScale = new Vector3(lifeRatio, 1, 1);
 
         if (lifeRatio == 0)
         { lifeRatio = 1; }
@@ -164,14 +168,14 @@ public class PlayerController : MonoBehaviour
     // iShooter Methods
     //========================================
     void ResetShooter()
-    { 
+    {
         mShooter.ResetShooter();
 
         mShooter.mMultiplierDamage = 10f;
         mShooter.mMultiplierArea = 1f;
         mShooter.mMultiplierReloadTime = 1f;
         mShooter.mMultiplierFireRate = 1f;
-        mShooter.mMultiplierProjectileSpeed = 1f;    
+        mShooter.mMultiplierProjectileSpeed = 1f;
     }
 
     void UpdateIShooter()
@@ -179,9 +183,9 @@ public class PlayerController : MonoBehaviour
         if (mIsMouseDown || mMouseWasDown)
         {
             mMouseWasDown = false;
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-            mShooter.TryShoot( transform.position, mousePosition ); 
-        } 
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mShooter.TryShoot(transform.position, mousePosition);
+        }
     }
 
 
@@ -205,30 +209,30 @@ public class PlayerController : MonoBehaviour
     //========================================
     // Collision
     //========================================
-    private void OnProjectileHit( Collider2D collider )
+    private void OnProjectileHit(Collider2D collider)
     {
-        Projectile projectile = collider.gameObject.GetComponent<Projectile>(); 
+        Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if( projectile != null )
+        if (projectile != null)
         {
             Shooter shooter = projectile.mWeapon.mShooter;
 
-            if( shooter.gameObject.GetComponent<Enemy>() != null )
+            if (shooter.gameObject.GetComponent<Enemy>() != null)
             {
-                mKillable.Hit( projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage );
+                mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
                 UpdateHealthBar();
-                if( mKillable.IsDead() )
-                { 
+                if (mKillable.IsDead())
+                {
                     PlayDeathAnimation(() =>
                     {
                         gameObject.SetActive(false);
                     });
                 }
-                
-                if( !projectile.mWeapon.mPierce )
+
+                if (!projectile.mWeapon.mPierce)
                 {
-                    GameObject.Destroy( projectile.gameObject );
-                } 
+                    GameObject.Destroy(projectile.gameObject);
+                }
             }
         }
     }

@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
 
     // Reference to Room Loader (Animation)
     private GameObject RoomLoader;
+    public bool mCardSelection;
 
     // keep a copy of the executing coroutine (timer)
     private IEnumerator timerCoroutine;
@@ -34,6 +35,7 @@ public class LevelManager : MonoBehaviour
     private GameObject mainCamera;
     //Player stuff
     private GameObject mPlayer;
+
     // Start is called before the first frame update
     public void Initialize()
     {
@@ -45,6 +47,7 @@ public class LevelManager : MonoBehaviour
         // Retrieve GameObjects reference
         RoomLoader = GameObject.Find("RoomLoader");
         mCardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
+        mCardSelection = false;
 
         // Retrieve UI Elements
         cardCanvas = GameObject.Find("CardCanvas");
@@ -60,7 +63,7 @@ public class LevelManager : MonoBehaviour
 
         // Start Timer Coroutine
         UpdateTimer();
-        BuildRoom();
+        BuildRoom(currentRoom);
     }
 
     void FixedUpdate()
@@ -108,26 +111,25 @@ public class LevelManager : MonoBehaviour
     }
 
 
-    private void BuildRoom()
+    private void BuildRoom(int whichLevel)
     {
-        int currentLevel = 2; // TODO
-        int ennemyBasicCount = 4;
-        int ennemyShooterCount = 2;
-        // int ennemyBasicCount = Math.Max( currentLevel + 2, 0 );
-        // int ennemyShooterCount = Math.Max( currentLevel - 4, 0 );
+        // int ennemyBasicCount = 4;
+        // int ennemyShooterCount = 2;
+        int ennemyBasicCount = Math.Max(whichLevel + 2, 0);
+        int ennemyShooterCount = Math.Max(whichLevel - 4, 0);
 
         // Projectiles
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
 
         // Player
         GameManager.mInstance.mThePlayer.Reset();
-        GameObject area = GameObject.Find("SpawnAreas/" + currentLevel + "-Player");
+        GameObject area = GameObject.Find("SpawnAreas/" + whichLevel + "-Player");
         Debug.Assert(area != null);
         GameManager.mInstance.mThePlayer.transform.position = new Vector3(area.transform.position.x, area.transform.position.y, -1);
 
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( currentLevel, ennemyBasicCount, ennemyShooterCount );
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
     }
 
     public void Retry()
@@ -137,7 +139,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         Time.timeScale = 1;
-        BuildRoom();
+        BuildRoom(currentRoom);
     }
 
     // Current room finish
@@ -211,8 +213,11 @@ public class LevelManager : MonoBehaviour
     // Coroutines :
     public IEnumerator FinishRoomCoroutine(float waitingTime)
     {
-        // Hide IGCanvas
+        // Clean Monster & Projectiles + Hide IGCanvas
         canvas.SetActive(false);
+        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+        mCardSelection = true;
 
         // Wait
         yield return new WaitForSeconds(waitingTime);
@@ -227,6 +232,7 @@ public class LevelManager : MonoBehaviour
         mGameTime = 10;
         mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(mGameTime);
         canvas.SetActive(true);
+        mCardSelection = false;
 
         // Wait
         yield return new WaitForSeconds(waitingTime);
@@ -235,7 +241,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         // Handle enemies spawn
-        // BuildRoom();
+        BuildRoom(currentRoom);
     }
 
 }
