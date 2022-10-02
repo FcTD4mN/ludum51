@@ -111,7 +111,10 @@ public class LevelManager : MonoBehaviour
     private void BuildRoom()
     {
         int currentLevel = 2; // TODO
-        int ennemyCount = 4;
+        int ennemyBasicCount = 4;
+        int ennemyShooterCount = 2;
+        // int ennemyBasicCount = Math.Max( currentLevel + 2, 0 );
+        // int ennemyShooterCount = Math.Max( currentLevel - 4, 0 );
 
         // Projectiles
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
@@ -124,7 +127,7 @@ public class LevelManager : MonoBehaviour
 
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( currentLevel, ennemyCount );
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( currentLevel, ennemyBasicCount, ennemyShooterCount );
     }
 
     public void Retry()

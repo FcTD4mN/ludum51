@@ -117,6 +117,10 @@ public class PlayerController : MonoBehaviour
         {
             levelManager.FinishRoom();
         }
+        else if( envCollision.gameObject.GetComponent<Projectile>() )
+        {
+            OnProjectileHit( envCollision );
+        }
     }
 
     // ======================================
@@ -195,6 +199,38 @@ public class PlayerController : MonoBehaviour
     public void MouseUp(Event mouseEvent)
     {
         mIsMouseDown = false;
+    }
+
+
+    //========================================
+    // Collision
+    //========================================
+    private void OnProjectileHit( Collider2D collider )
+    {
+        Projectile projectile = collider.gameObject.GetComponent<Projectile>(); 
+
+        if( projectile != null )
+        {
+            Shooter shooter = projectile.mWeapon.mShooter;
+
+            if( shooter.gameObject.GetComponent<Enemy>() != null )
+            {
+                mKillable.Hit( projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage );
+                UpdateHealthBar();
+                if( mKillable.IsDead() )
+                { 
+                    PlayDeathAnimation(() =>
+                    {
+                        gameObject.SetActive(false);
+                    });
+                }
+                
+                if( !projectile.mWeapon.mPierce )
+                {
+                    GameObject.Destroy( projectile.gameObject );
+                } 
+            }
+        }
     }
 
 }

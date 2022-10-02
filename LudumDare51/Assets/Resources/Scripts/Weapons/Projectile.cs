@@ -40,30 +40,5 @@ public class Projectile : MonoBehaviour
         } 
         
         GameObject.Destroy( gameObject );
-    }
-
-
-    //========================================
-    // Collision
-    //========================================
-    void OnTriggerEnter2D( Collider2D collider )
-    {
-        Enemy ennemy = collider.gameObject.GetComponent<Enemy>();
-
-        if( ennemy != null )
-        {
-            Killable killable = ennemy.GetComponent<Killable>();
-            killable.Hit( mWeapon.mBaseDamage * mWeapon.mShooter.mMultiplierDamage );
-
-            if( killable.IsDead() )
-            {
-                killable.Die();
-            }
-            
-            if( !mWeapon.mPierce )
-            {
-                GameObject.Destroy( gameObject );
-            }
-        }
-    }
+    } 
 }

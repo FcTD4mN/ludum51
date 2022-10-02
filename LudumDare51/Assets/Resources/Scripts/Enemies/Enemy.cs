@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     private Killable mKillable;
     private float mHealthBarInitialScaleX = 1f;
 
-    void Start()
+    public void Initialize()
     {
         mHealthBar = transform.Find("HealthBar").gameObject;
         Debug.Assert(mHealthBar != null, "No health bar");
@@ -69,6 +69,34 @@ public class Enemy : MonoBehaviour
                 {
                     thePlayer.gameObject.SetActive(false);
                 });
+            }
+        }
+    }
+
+
+    //========================================
+    // Collision
+    //========================================
+    void OnTriggerEnter2D( Collider2D collider )
+    {
+        Projectile projectile = collider.gameObject.GetComponent<Projectile>(); 
+
+        if( projectile != null )
+        {
+            Shooter shooter = projectile.mWeapon.mShooter;
+
+            if( shooter.gameObject.GetComponent<Enemy>() == null )
+            {
+                mKillable.Hit( projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage );
+                if( mKillable.IsDead() )
+                { 
+                    mKillable.Die(); 
+                }
+                
+                if( !projectile.mWeapon.mPierce )
+                {
+                    GameObject.Destroy( projectile.gameObject );
+                } 
             }
         }
     }
