@@ -19,7 +19,7 @@ public class RoomLoader : MonoBehaviour
 
     public IEnumerator FinishRoomAnimation()
     {
-        // Play animation
+        // Pause game and Play animation
         transition.SetTrigger("Start");
 
         // Wait
@@ -36,7 +36,6 @@ public class RoomLoader : MonoBehaviour
         // Wait
         yield return new WaitForSeconds(transitionTime);
 
-        // Load next room (move camera)
-        // transition.SetTrigger("End");
+        // Resume game
     }
 }

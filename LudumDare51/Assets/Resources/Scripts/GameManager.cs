@@ -26,10 +26,10 @@ public class GameManager : MonoBehaviour
         // If there is already an gamemanager instance 
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
-        
+
         GameObject player = GameObject.Find("Player");
         mThePlayer = player.GetComponent<PlayerController>();
-        Debug.Assert( mThePlayer && player, "Can't find player" );
+        Debug.Assert(mThePlayer && player, "Can't find player");
         player.GetComponent<Ludum51.Player.Player>().Initialize();
         mThePlayer.Initialize();
 
@@ -40,12 +40,12 @@ public class GameManager : MonoBehaviour
         mProjectileManager.Initialize();
 
         mEnnemyManager = transform.Find("EnnemyManager")?.gameObject.GetComponent<EnnemyManager>();
-        Debug.Assert( mEnnemyManager != null );
-        mEnnemyManager.Initialize(); 
+        Debug.Assert(mEnnemyManager != null);
+        mEnnemyManager.Initialize();
 
         mLevelManager = transform.Find("LevelManager")?.gameObject.GetComponent<LevelManager>();
-        Debug.Assert( mLevelManager != null );
-        mLevelManager.Initialize(); 
+        Debug.Assert(mLevelManager != null);
+        mLevelManager.Initialize();
     }
 
 
@@ -56,16 +56,16 @@ public class GameManager : MonoBehaviour
     {
         Event m_Event = Event.current;
 
-        if (m_Event.type == EventType.MouseDown)
+        if (!mLevelManager.mCardSelection && m_Event.type == EventType.MouseDown)
         {
             mThePlayer.MouseDown(m_Event);
         }
 
-        if (m_Event.type == EventType.MouseDrag)
+        if (!mLevelManager.mCardSelection && m_Event.type == EventType.MouseDrag)
         {
         }
 
-        if (m_Event.type == EventType.MouseUp)
+        if (!mLevelManager.mCardSelection && m_Event.type == EventType.MouseUp)
         {
             mThePlayer.MouseUp(m_Event);
         }
