@@ -7,9 +7,9 @@ using Ludum51.Player.Stat;
 public class Card
 {
     // default ideas
-    private StatModType mType;
-    private PowerUpCategory mPowerUpCategory;
-    private float mPoints;
+    public StatModType mType;
+    public PowerUpCategory mPowerUpCategory;
+    public float mPoints;
 
     public Card()
     {
@@ -72,7 +72,7 @@ public class Card
 
     public override String ToString()
     {
-        return "Type : " + mPowerUpCategory + " / Points : " + mPoints;
+        return "Power Up : " + mPowerUpCategory + " / Type : " + mType + " / Points : " + mPoints;
     }
 
     public String ToCardText()
@@ -80,16 +80,17 @@ public class Card
         return mPowerUpCategory + "\r\n+" + mType + " / " + mPoints;
     }
 
-    public enum PowerUpCategory
-    {
-        Health = 1,
-        Speed = 2,
-        WeaponSpeed = 3,
-        Projectile = 4,
-        Cooldown = 5,
-        Zone = 6,
-        Damage = 7
-    }
+}
+
+public enum PowerUpCategory
+{
+    Health = 1,
+    Speed = 2,
+    WeaponSpeed = 3,
+    Projectile = 4,
+    Cooldown = 5,
+    Zone = 6,
+    Damage = 7
 }
 
 class Tuplez
