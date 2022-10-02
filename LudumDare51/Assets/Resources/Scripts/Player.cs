@@ -15,7 +15,8 @@ namespace Ludum51.Player
         public PlayerStat Zone;
         private PowerUp PU = new PowerUp();
 
-        public float test { get { return this.getStat(); } }
+
+        public object test { get { return this.getStat(); } }
 
         public void Initialize()
         {
@@ -29,17 +30,19 @@ namespace Ludum51.Player
 
         void update()
         {
-
         }
 
         public void pushCard(Card card)
         {
             PU.Equip(this, card);
+
         }
 
-        public float getStat()
+        public string getStat()
         {
-            return this.Damage.Value;
+            /* float[] stats = { this.Damage.Value, this.Health.Value, this.WeaponSpeed.Value, this.Projectile.Value, this.Cooldown.Value, this.Zone.Value };
+            return stats; */
+            return this.Damage.Value + " / " + this.Health.Value + " / " + this.WeaponSpeed.Value + " / " + this.Projectile.Value + " / " + this.Cooldown.Value + " / " + this.Zone.Value;
         }
 
     }
@@ -76,6 +79,7 @@ namespace Ludum51.Player
                     player.Zone.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
             }
+            Debug.Log(player.getStat());
         }
 
         public void Unequip(Player player)
