@@ -89,7 +89,9 @@ public class LevelManager : MonoBehaviour
 
         Time.timeScale = 1;
 
-        // Reset Character & Enemies : TO-DO
+        // Reset Character & Enemies
+        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( 2, 4 );
     }
 
     // Set-up & Load Next Room
@@ -116,7 +118,9 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
         mTimer.SetActive(true);
 
-        // Handle enemies spawn - TO DO
+        // Handle enemies spawn
+        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        GameManager.mInstance.mEnnemyManager.SpawnEnnemies( 2, 4 );
     }
 
 }

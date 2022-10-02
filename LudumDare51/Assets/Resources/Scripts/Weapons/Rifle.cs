@@ -12,6 +12,8 @@ public class Rifle : Weapon
         mBaseFireRatePerSec = 3f;
         mBaseProjectileSpeed = 3f;
         
+        mPierce = false;
+
         mBaseBullets = 30;
         mBullets = 30;
     }
@@ -25,11 +27,13 @@ public class Rifle : Weapon
         float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed; 
         float projectileSize = mBaseArea * mShooter.mMultiplierArea; 
 
-        GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile-Rifle");
+        GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Projectile-Rifle");
         GameObject projectile = GameObject.Instantiate( projectilePrefab, mParent.transform.position, Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));
         projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x, 
                                                        projectileSize * projectile.transform.localScale.y,
                                                        projectile.transform.localScale.z );
+        Projectile projectileTyped = projectile.GetComponent<Projectile>();
+        projectileTyped.mWeapon = this;
 
         // Sending toward direction
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();

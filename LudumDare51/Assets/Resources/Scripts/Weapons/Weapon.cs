@@ -14,6 +14,7 @@ public class Weapon
     public float mBaseFireRatePerSec = 1f;
     public float mBaseProjectileSpeed = 1f;
 
+    public bool mPierce = false;
 
     public int mBaseBullets = 1;
     public int mBullets = 1;

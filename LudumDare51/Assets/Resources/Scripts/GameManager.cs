@@ -11,9 +11,10 @@ public class GameManager : MonoBehaviour
 
     // Managers
     public ProjectileManager mProjectileManager;
+    public EnnemyManager mEnnemyManager;
 
     // Objects
-    private PlayerController mThePlayer;
+    public PlayerController mThePlayer;
 
 
     // ======================================
@@ -25,15 +26,18 @@ public class GameManager : MonoBehaviour
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
         
+        mThePlayer = GameObject.Find("Player").GetComponent<PlayerController>();
+        Debug.Assert( mThePlayer != null );
+
+
         // Get and initialize all managers
         mProjectileManager = transform.Find("ProjectileManager")?.gameObject.GetComponent<ProjectileManager>();
         Debug.Assert( mProjectileManager != null );
         mProjectileManager.Initialize();
 
-
-
-        mThePlayer = GameObject.Find("Player").GetComponent<PlayerController>();
-        Debug.Assert( mThePlayer != null );
+        mEnnemyManager = transform.Find("EnnemyManager")?.gameObject.GetComponent<EnnemyManager>();
+        Debug.Assert( mEnnemyManager != null );
+        mEnnemyManager.Initialize(); 
     }
 
 

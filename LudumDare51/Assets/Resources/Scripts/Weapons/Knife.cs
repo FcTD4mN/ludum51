@@ -12,6 +12,8 @@ public class Knife : Weapon
         mBaseFireRatePerSec = 3f;
         mBaseProjectileSpeed = 90f;
         
+        mPierce = true;
+        
         mBaseBullets = 1;
         mBullets = 1;
     }
@@ -27,11 +29,14 @@ public class Knife : Weapon
         float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed; 
         Vector3 location = mParent.transform.position + new Vector3( directionNorm.x * projectileSize, directionNorm.y * projectileSize, 0 );
 
-        GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile-Knife");
+        GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Projectile-Knife");
         GameObject projectile = GameObject.Instantiate( projectilePrefab, location, Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));
         projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x, 
                                                        projectileSize, // y is 1 by default
                                                        projectile.transform.localScale.z );
+
+        Projectile projectileTyped = projectile.GetComponent<Projectile>();
+        projectileTyped.mWeapon = this;
 
         // Sending toward direction
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();

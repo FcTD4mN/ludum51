@@ -114,10 +114,10 @@ public class PlayerController : MonoBehaviour, iShooter
     //========================================
     void InitializeIShooter()
     {
-        mWeapon = new Knife( this, this );
-        // mWeapon = new Rifle( this, this );
+        // mWeapon = new Knife( this, this );
+        mWeapon = new Rifle( this, this );
 
-        mMultiplierDamage = 1f;
+        mMultiplierDamage = 10f;
         mMultiplierArea = 1f;
         mMultiplierReloadTime = 1f;
         mMultiplierFireRate = 1f;
