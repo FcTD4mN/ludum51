@@ -84,8 +84,9 @@ public class Enemy : MonoBehaviour
         if( projectile != null )
         {
             Shooter shooter = projectile.mWeapon.mShooter;
+            bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
 
-            if( shooter.gameObject.GetComponent<Enemy>() == null )
+            if( !shooterIsEnnemy && shooter.tag != "BossGun" )
             {
                 mKillable.Hit( projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage );
                 if( mKillable.IsDead() )

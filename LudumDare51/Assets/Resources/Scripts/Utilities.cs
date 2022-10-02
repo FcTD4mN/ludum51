@@ -142,6 +142,23 @@ public class Utilities : MonoBehaviour
 
     }
 
+    public static Vector3 RotatePointAroundPivot( Vector3 point, Vector3 pivot, Vector3 angles )  
+    {
+        Vector3 dir = point - pivot;            // get point direction relative to pivot
+        dir = Quaternion.Euler(angles) * dir;   // rotate it
+        point = dir + pivot;                    // calculate rotated point
+        return  point;                          // return it
+    }
+
+    public static Vector2 RotatePointAroundPivot( Vector2 point, Vector2 pivot, float angle )  
+    {
+        return  RotatePointAroundPivot( new Vector3( point.x, point.y, 0 ), 
+                                        new Vector3( pivot.x, point.y, 0 ), 
+                                        new Vector3( 1, 1, angle ) );
+    }
+
+
+
 
     //========================================
     // Animation

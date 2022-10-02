@@ -27,7 +27,7 @@ public class Knife : Weapon
 
         float projectileSize = mBaseArea * mShooter.mMultiplierArea; 
         float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed; 
-        Vector3 location = mParent.transform.position + new Vector3( directionNorm.x * projectileSize, directionNorm.y * projectileSize, 0 );
+        Vector3 location = new Vector3( at.x, at.y, -1 ) + new Vector3( directionNorm.x * projectileSize, directionNorm.y * projectileSize, -1 );
 
         GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Projectile-Knife");
         GameObject projectile = GameObject.Instantiate( projectilePrefab, location, Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));

@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
         mShooter.mMultiplierArea = 1f;
         mShooter.mMultiplierReloadTime = 1f;
         mShooter.mMultiplierFireRate = 1f;
-        mShooter.mMultiplierProjectileSpeed = 1f;    
+        mShooter.mMultiplierProjectileSpeed = 1f;
     }
 
     void UpdateIShooter()
@@ -212,8 +212,9 @@ public class PlayerController : MonoBehaviour
         if( projectile != null )
         {
             Shooter shooter = projectile.mWeapon.mShooter;
+            bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
 
-            if( shooter.gameObject.GetComponent<Enemy>() != null )
+            if( shooterIsEnnemy || shooter.tag == "BossGun" )
             {
                 mKillable.Hit( projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage );
                 UpdateHealthBar();

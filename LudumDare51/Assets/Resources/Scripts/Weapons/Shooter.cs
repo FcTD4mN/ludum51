@@ -11,6 +11,7 @@ public class Shooter: MonoBehaviour
     public float mMultiplierReloadTime          = 1f; 
     public float mMultiplierFireRate            = 1f; 
     public float mMultiplierProjectileSpeed     = 1f;  
+    public int   mMultiplierProjectileCount     = 1;  
 
 
     public void SetWeapon( Weapon weapon )
@@ -42,7 +43,23 @@ public class Shooter: MonoBehaviour
     {
         if( mWeapon.mBullets > 0 )
         { 
-            mWeapon.SpawnProjectile( from, to );
+            if( mMultiplierProjectileCount == 1 )
+            {
+                mWeapon.SpawnProjectile( from, to );
+            }
+            else 
+            {
+                float halfAngle = 10f;
+                Vector2 pointTo = Utilities.RotatePointAroundPivot( to, from, halfAngle * (int)(mMultiplierProjectileCount/2) );
+                mWeapon.SpawnProjectile( from, pointTo );
+
+                for (int i = 1; i < mMultiplierProjectileCount; i++)
+                {
+                    pointTo = Utilities.RotatePointAroundPivot( pointTo, from, -halfAngle );
+                    mWeapon.SpawnProjectile( from, pointTo );
+                }
+            }
+
             mWeapon.mBullets -= 1;
         }
         else
