@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
             mGameTime = 10;
             mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(Mathf.Round(mGameTime));
             UpdateTimer();
-            BuildRoom(currentRoom);
+            BuildRoom(currentRoom, true);
         }));
 
     }
@@ -126,7 +126,7 @@ public class LevelManager : MonoBehaviour
     }
 
 
-    private void BuildRoom(int whichLevel)
+    private void BuildRoom(int whichLevel, bool reset)
     {
         // int ennemyBasicCount = 4;
         // int ennemyShooterCount = 2;
@@ -137,8 +137,12 @@ public class LevelManager : MonoBehaviour
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
 
         // Player
-        GameManager.mInstance.mThePlayer.Reset();
-        Debug.Log( "SpawnAreas/SpawnPlayer" + whichLevel + "-Player" );
+        Weapon playerWeapon = GameManager.mInstance.mThePlayer.GetComponent<Shooter>().GetWeapon();
+        playerWeapon.Reset(); // This will just reload the gun, not reset the stats
+
+        if(reset)
+            GameManager.mInstance.mThePlayer.Reset(); // This will reset all stats
+
         GameObject area = GameObject.Find("SpawnAreas/SpawnPlayer/" + whichLevel + "-Player");
         Debug.Assert(area != null);
         GameManager.mInstance.mThePlayer.transform.position = new Vector3(area.transform.position.x, area.transform.position.y, -1);
@@ -155,7 +159,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         Time.timeScale = 1;
-        BuildRoom(currentRoom);
+        BuildRoom(currentRoom, true);
     }
 
     // Current room finish
@@ -257,7 +261,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         // Handle enemies spawn
-        BuildRoom(currentRoom);
+        BuildRoom(currentRoom, false);
     }
 
 }

@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
         movementInput = Vector2.zero;
         gameObject.SetActive(true);
         mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
-        animator.Play("Player_Idle", 0); // animator is null here, don't know why
+        animator.Play("Player_Idle", 0);
 
         ResetShooter();
         UpdateHealthBar();
@@ -183,11 +183,12 @@ public class PlayerController : MonoBehaviour
     {
         mShooter.ResetShooter();
 
-        mShooter.mMultiplierDamage = 10f;
+        mShooter.mMultiplierDamage = 1f;
         mShooter.mMultiplierArea = 1f;
         mShooter.mMultiplierReloadTime = 1f;
         mShooter.mMultiplierFireRate = 1f;
         mShooter.mMultiplierProjectileSpeed = 1f;
+        mShooter.mMultiplierProjectileCount = 1;
     }
 
     void UpdateIShooter()
@@ -283,6 +284,8 @@ public class PlayerController : MonoBehaviour
         mLabelWeaponSpeed.text = "FireRate: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
         mLabelProjectileSpeed.text = "ProjectileSpeed: " + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
         mLabelReloadTime.text = "ReloadTime: " + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
+
+        UpdateHealthBar();
     }
 
 }
