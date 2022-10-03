@@ -13,6 +13,7 @@ namespace Ludum51.Player
         public PlayerStat Projectile;
         public PlayerStat Cooldown;
         public PlayerStat Zone;
+        public PlayerStat Pierce;
         private PowerUp PU = new PowerUp();
 
 
@@ -26,6 +27,7 @@ namespace Ludum51.Player
             Projectile.BaseValue = 1;
             Cooldown.BaseValue = 1;
             Zone.BaseValue = 1;
+            Pierce.BaseValue = 0;
 
             SyncStatsToShooter();
         }
@@ -59,6 +61,7 @@ namespace Ludum51.Player
             shooter.mMultiplierProjectileCount = (int)Projectile.Value;
             shooter.mMultiplierProjectileSpeed = WeaponSpeed.Value;
             shooter.mMultiplierReloadTime = Cooldown.Value;
+            shooter.GetWeapon().mPierce = Pierce.Value > 0;
 
             GetComponent<PlayerController>().UpdateGUI();
         }
@@ -94,6 +97,9 @@ namespace Ludum51.Player
                     break;
                 case PowerUpCategory.Zone:
                     player.Zone.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
+                    break;
+                case PowerUpCategory.Pierce:
+                    player.Pierce.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
             }
 

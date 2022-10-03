@@ -8,6 +8,7 @@ using TMPro;
 
 public class CardManager : MonoBehaviour, ISaveable
 {
+    private CardList mCardListGenerator;
     // Contain current deck
     private List<Card> mDeckOfCards;
 
@@ -21,16 +22,17 @@ public class CardManager : MonoBehaviour, ISaveable
         mCurrentDeckUI = new List<GameObject>();
         // Should load from file
         mDeckOfCards = new List<Card>();
+        mCardListGenerator = new CardList();
     }
 
-    private Card[] SpawnCard()
+    private Card[] SpawnCard( bool special )
     {
         // Generate new cards
         mCurrentChoice = new Card[mNumberOfCards];
 
         for (int i = 0; i < mNumberOfCards; i++)
         {
-            mCurrentChoice[i] = new Card(i + 1);
+            mCurrentChoice[i] = special ? mCardListGenerator.GetRandomSpecialCard() : mCardListGenerator.GetRandomNormalCard();
         }
 
         return mCurrentChoice;
@@ -48,17 +50,7 @@ public class CardManager : MonoBehaviour, ISaveable
         // Delete from UI first
         RemoveCardsUI();
 
-        Card[] cCards = null;
-        if( newChapter )
-        {
-            // TODO: Generate Special Cards
-            cCards = SpawnCard();
-        }
-        else
-        {
-            // Generate Cards
-            cCards = SpawnCard();
-        }
+        Card[] cCards = SpawnCard( newChapter );
 
         // Create as many Prefabas as there is Cards
         int posX = -250;
