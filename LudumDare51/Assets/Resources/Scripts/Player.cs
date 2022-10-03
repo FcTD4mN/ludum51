@@ -22,6 +22,7 @@ namespace Ludum51.Player
         public void Initialize()
         {
             Health.BaseValue = 100;
+            Speed.BaseValue = 1;
             Damage.BaseValue = 5;
             WeaponSpeed.BaseValue = 1;
             Projectile.BaseValue = 1;

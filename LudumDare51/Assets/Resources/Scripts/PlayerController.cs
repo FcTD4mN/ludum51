@@ -105,14 +105,15 @@ public class PlayerController : MonoBehaviour
     {
         if (direction != Vector2.zero)
         {
+            float finalSpeed = GetComponent<Ludum51.Player.Player>().Speed.Value * moveSpeed;
             int count = rb.Cast(
             direction,
             movementFilter,
             castCollisions,
-            moveSpeed * Time.fixedDeltaTime + collisionOffset);
+            finalSpeed * Time.fixedDeltaTime + collisionOffset);
             if (count == 0)
             {
-                rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+                rb.MovePosition(rb.position + direction * finalSpeed * Time.fixedDeltaTime);
                 return true;
             }
             else
