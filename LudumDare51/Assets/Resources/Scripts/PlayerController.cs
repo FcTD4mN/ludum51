@@ -258,20 +258,31 @@ public class PlayerController : MonoBehaviour
     private TextMeshProUGUI mLabelDamage;
     private TextMeshProUGUI mLabelArea;
     private TextMeshProUGUI mLabelWeaponSpeed;
+    private TextMeshProUGUI mLabelProjectileSpeed;
+    private TextMeshProUGUI mLabelReloadTime;
 
     private void InitGUIVariables()
     {
         mLabelDamage = GameObject.Find( "Canvas/InGamePanel/Stats/LabelDamage" ).GetComponent<TextMeshProUGUI>();
         mLabelArea = GameObject.Find( "Canvas/InGamePanel/Stats/LabelArea" ).GetComponent<TextMeshProUGUI>();
         mLabelWeaponSpeed = GameObject.Find( "Canvas/InGamePanel/Stats/LabelWeaponSpeed" ).GetComponent<TextMeshProUGUI>();
+        mLabelProjectileSpeed = GameObject.Find( "Canvas/InGamePanel/Stats/LabelProjectileSpeed" ).GetComponent<TextMeshProUGUI>();
+        mLabelReloadTime = GameObject.Find( "Canvas/InGamePanel/Stats/LabelReloadTime" ).GetComponent<TextMeshProUGUI>();
+
+        Debug.Assert( mLabelDamage, "mLabelDamage" );
+        Debug.Assert( mLabelArea, "mLabelArea" );
+        Debug.Assert( mLabelWeaponSpeed, "mLabelWeaponSpeed" );
+        Debug.Assert( mLabelProjectileSpeed, "mLabelProjectileSpeed" );
+        Debug.Assert( mLabelReloadTime, "mLabelReloadTime" );
     }
 
     public void UpdateGUI()
     {
-        Debug.Log( "GUI" );
         mLabelDamage.text = "Damage: " + mShooter.GetWeapon().mBaseDamage * mShooter.mMultiplierDamage;
         mLabelArea.text = "Area: " + mShooter.GetWeapon().mBaseArea * mShooter.mMultiplierArea;
-        mLabelWeaponSpeed.text = "Weapon Speed: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
+        mLabelWeaponSpeed.text = "FireRate: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
+        mLabelProjectileSpeed.text = "ProjectileSpeed: " + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
+        mLabelReloadTime.text = "ReloadTime: " + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
     }
 
 }
