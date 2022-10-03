@@ -6148,6 +6148,7 @@ MonoBehaviour:
   mLevelManager: {fileID: 0}
   mCardManager: {fileID: 0}
   mThePlayer: {fileID: 0}
+  mPlayerObject: {fileID: 0}
 --- !u!1 &279559758
 GameObject:
   m_ObjectHideFlags: 0
@@ -12794,9 +12795,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1609237501989107425, guid: ce0448c4c694b53479156b78c74d304a, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3434198084284094562, guid: ce0448c4c694b53479156b78c74d304a, type: 3}
       propertyPath: m_Name
       value: RoomLoader
+      objectReference: {fileID: 0}
+    - target: {fileID: 3434198084284094562, guid: ce0448c4c694b53479156b78c74d304a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3434198084284094563, guid: ce0448c4c694b53479156b78c74d304a, type: 3}
       propertyPath: m_RootOrder
