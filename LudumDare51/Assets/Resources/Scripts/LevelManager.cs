@@ -261,6 +261,7 @@ public class LevelManager : MonoBehaviour
         canvas.SetActive(false);
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+        GameManager.mInstance.mThePlayer.transform.position = new Vector3(-10, -10, -1);
         mCardSelection = true;
 
         // Wait
