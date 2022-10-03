@@ -252,6 +252,9 @@ public class LevelManager : MonoBehaviour
 
     private void FinishChapter()
     {
+        // Save game data;
+        GameManager.mInstance.SaveGame();
+
         // Load menu scene
         chapterNumber += 1;
         currentRoom = 1;
