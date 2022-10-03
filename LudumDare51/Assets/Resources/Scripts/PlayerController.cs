@@ -37,7 +37,18 @@ public class PlayerController : MonoBehaviour
 
         mShooter = GetComponent<Shooter>();
         Debug.Assert(mShooter, "No mShooter");
-        mShooter.SetWeapon(new Rifle(this, mShooter));
+
+        Weapon theWeapon = new Rifle( this, mShooter );
+        switch( GameManager.mWeaponChoice )
+        {
+            case 0:
+                theWeapon = new Rifle( this, mShooter );
+                break;
+            case 1:
+                theWeapon = new Knife( this, mShooter );
+                break;
+        }
+        mShooter.SetWeapon( theWeapon );
 
         mHealthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
 

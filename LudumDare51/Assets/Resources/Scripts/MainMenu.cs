@@ -5,18 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void PlayGame()
     {
         // Make sure Scene are in the right order
@@ -26,5 +14,25 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+
+    public void MenuSelectWeaponClicked_Rifle()
+    {
+        Debug.Log( "Rifle" );
+        GameManager.mWeaponChoice = 0;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void MenuSelectWeaponClicked_Knife()
+    {
+        GameManager.mWeaponChoice = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void MenuSelectWeaponClicked_Back()
+    {
+        Debug.Log( "Back" );
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 }

@@ -26,6 +26,8 @@ namespace Ludum51.Player
             Projectile.BaseValue = 1;
             Cooldown.BaseValue = 1;
             Zone.BaseValue = 1;
+
+            SyncStatsToShooter();
         }
 
         void update()
@@ -45,6 +47,19 @@ namespace Ludum51.Player
             return this.Damage.Value + " / " + this.Health.Value + " / " + this.WeaponSpeed.Value + " / " + this.Projectile.Value + " / " + this.Cooldown.Value + " / " + this.Zone.Value;
         }
 
+
+        public void SyncStatsToShooter()
+        {
+            GetComponent<Killable>().mBaseLife = Health.Value;
+            Shooter shooter = GetComponent<Shooter>();
+
+            shooter.mMultiplierArea = Zone.Value;
+            shooter.mMultiplierDamage = Damage.Value;
+            shooter.mMultiplierFireRate = WeaponSpeed.Value;
+            shooter.mMultiplierProjectileCount = (int)Projectile.Value;
+            shooter.mMultiplierProjectileSpeed = WeaponSpeed.Value;
+            shooter.mMultiplierReloadTime = Cooldown.Value;
+        }
     }
 
 
@@ -79,6 +94,8 @@ namespace Ludum51.Player
                     player.Zone.AddModifier(new Stat.StatModifier(card.mPoints, card.mType, this));
                     break;
             }
+
+            player.SyncStatsToShooter();
             Debug.Log(player.getStat());
         }
 

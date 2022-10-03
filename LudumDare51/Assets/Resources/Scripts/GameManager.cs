@@ -19,12 +19,19 @@ public class GameManager : MonoBehaviour
     public PlayerController mThePlayer;
 
 
+    // Scenes Data
+    // Rifle = 0
+    // Knife = 1
+    // Grenade = 2
+    public static int mWeaponChoice = 0;
+
+
     // ======================================
     // Initialization
     // ======================================
     void OnEnable()
     {
-        // If there is already an gamemanager instance 
+        // If there is already an gamemanager instance
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
 
