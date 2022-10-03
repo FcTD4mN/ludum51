@@ -54,7 +54,7 @@ public class Weapon
         mIsReloading = true;
         mParent.StartCoroutine( Utilities.ExecuteAfter( mBaseReloadTime * mShooter.mMultiplierReloadTime, ()=>{
             mBullets = mBaseBullets;
-            mIsReloading = false; 
+            mIsReloading = false;
         }) );
     }
 
@@ -62,7 +62,7 @@ public class Weapon
     public void Reset()
     {
         mBullets = mBaseBullets;
-        mIsReloading = false; 
+        mIsReloading = false;
         mIsShootAvailable = true;
     }
 }
