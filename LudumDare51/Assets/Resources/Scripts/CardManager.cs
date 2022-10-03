@@ -103,57 +103,55 @@ public class CardManager : MonoBehaviour, ISaveable
                     img.color = new Color32(218, 15, 192, 100);
                     break;
             }
+
+
+            Button btn = card.GetComponent<Button>();
+            // Text cText = btn.GetComponent<Text>();
+            TextMeshProUGUI btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
+            btnText.text = cCards[i].ToCardText();
+
+            int iCopy = i;
+            btn.onClick.AddListener(() => levelManager.ChooseCard(iCopy));
+            mCurrentDeckUI.Add(card);
+        }
+    }
+
+
+    private void RemoveCardsUI()
+    {
+        foreach (GameObject item in mCurrentDeckUI)
+        {
+            GameObject.Destroy(item);
+        }
+    }
+
+    public List<Card> getDeckOfCards()
+    {
+        return mDeckOfCards;
+    }
+
+    // SAVE DATA - JSON - Save current deck of cards
+    public void PopulateSaveData(SaveData dataSet)
+    {
+        // Saving cards
+        dataSet.mNumberOfCards = mDeckOfCards.Count;
+
+        foreach (Card card in mDeckOfCards)
+        {
+            card.PopulateSaveData(dataSet);
+        }
+    }
+
+    public void LoadFromSaveData(SaveData dataSet)
+    {
+        foreach (SaveData.CardData item in dataSet.mDeckOfCards)
+        {
+            Card cCard = new Card();
+            cCard.LoadFromSaveData(item);
+            mDeckOfCards.Add(cCard);
         }
 
-
-
-        Debug.Log(img.color);
-        Button btn = card.GetComponent<Button>();
-        // Text cText = btn.GetComponent<Text>();
-        TextMeshProUGUI btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
-        btnText.text = cCards[i].ToCardText();
-
-        int iCopy = i;
-        btn.onClick.AddListener(() => levelManager.ChooseCard(iCopy));
-        mCurrentDeckUI.Add(card);
+        // Equip the player after loading cards
+        EquipDeckOfCards(mDeckOfCards, GameManager.mInstance.mPlayerObject.GetComponent<Player>());
     }
-}
-
-private void RemoveCardsUI()
-{
-    foreach (GameObject item in mCurrentDeckUI)
-    {
-        GameObject.Destroy(item);
-    }
-}
-
-public List<Card> getDeckOfCards()
-{
-    return mDeckOfCards;
-}
-
-// SAVE DATA - JSON - Save current deck of cards
-public void PopulateSaveData(SaveData dataSet)
-{
-    // Saving cards
-    dataSet.mNumberOfCards = mDeckOfCards.Count;
-
-    foreach (Card card in mDeckOfCards)
-    {
-        card.PopulateSaveData(dataSet);
-    }
-}
-
-public void LoadFromSaveData(SaveData dataSet)
-{
-    foreach (SaveData.CardData item in dataSet.mDeckOfCards)
-    {
-        Card cCard = new Card();
-        cCard.LoadFromSaveData(item);
-        mDeckOfCards.Add(cCard);
-    }
-
-    // Equip the player after loading cards
-    EquipDeckOfCards(mDeckOfCards, GameManager.mInstance.mPlayerObject.GetComponent<Player>());
-}
 }
