@@ -226,28 +226,31 @@ public class PlayerController : MonoBehaviour
     {
         Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if (projectile != null)
+        if (projectile == null)
+            return;
+
+        Shooter shooter = projectile.mWeapon.mShooter;
+        if( shooter.gameObject == null )
+            return;
+
+        bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
+
+        if( shooterIsEnnemy || shooter.tag == "BossGun" )
         {
-            Shooter shooter = projectile.mWeapon.mShooter;
-            bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
-
-            if( shooterIsEnnemy || shooter.tag == "BossGun" )
+            mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
+            UpdateHealthBar();
+            if ( mKillable.IsDead() )
             {
-                mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
-                UpdateHealthBar();
-                if ( mKillable.IsDead() )
+                PlayDeathAnimation( ()=>
                 {
-                    PlayDeathAnimation( ()=>
-                    {
-                        gameObject.SetActive(false);
-                        GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
-                    });
-                }
+                    gameObject.SetActive(false);
+                    GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
+                });
+            }
 
-                if (!projectile.mWeapon.mPierce)
-                {
-                    GameObject.Destroy(projectile.gameObject);
-                }
+            if (!projectile.mWeapon.mPierce)
+            {
+                GameObject.Destroy(projectile.gameObject);
             }
         }
     }
