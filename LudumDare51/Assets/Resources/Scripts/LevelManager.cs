@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Ludum51.Player;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -179,36 +179,14 @@ public class LevelManager : MonoBehaviour
     // Show Card Panel
     private void ShowCardChoices()
     {
-        // Generate Cards
-        Card[] cCards = mCardManager.SpawnCard();
-
         // Show panel
         cardCanvas.SetActive(true);
 
-        // Create as many Prefabas as there is Cards
-        int posX = -250;
-        for (int i = 0; i < cCards.Length; i++)
-        {
-            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Cards/CardTemplate");
-            GameObject card = GameObject.Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            card.transform.SetParent(cardCanvas.transform);
-
-            RectTransform uiTransform = card.GetComponent<RectTransform>();
-            uiTransform.anchoredPosition = new Vector2(posX, 0);
-            posX += 250;
-
-            Button btn = card.GetComponent<Button>();
-            // Text cText = btn.GetComponent<Text>();
-            TextMeshProUGUI btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
-            btnText.text = cCards[i].ToCardText();
-
-            int iCopy = i;
-            btn.onClick.AddListener(() => ChooseCard(iCopy));
-        }
-
+        // Generate Cards
+        mCardManager.CreateCardUI(cardCanvas, this);
     }
 
-    void ChooseCard(int whichCard)
+    public void ChooseCard(int whichCard)
     {
         // Equip the card
         mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
@@ -228,6 +206,24 @@ public class LevelManager : MonoBehaviour
     {
         currentRoom += 1;
         mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 28, 0f, -10f);
+    }
+
+    private void FinishChapter()
+    {
+        // Load menu scene - TODO
+        // SceneManager.LoadScene("ChapterSelection");
+    }
+
+    public void FinishRun()
+    {
+        // Level +1
+        GameStat gStat = new GameStat();
+        gStat.mLevel = 1;
+        if (FileManager.LoadFromFile("SaveGlobalData.json", out var gameData))
+            gStat.LoadFromJson(gameData);
+
+        gStat.mLevel += 1;
+        if (FileManager.WriteToFile("SaveGlobalData.json", gStat.ToJson())) ;
     }
 
     // Coroutines :

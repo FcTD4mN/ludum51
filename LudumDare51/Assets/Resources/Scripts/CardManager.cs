@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Ludum51.Player;
+using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 public class CardManager : MonoBehaviour, ISaveable
 {
@@ -11,16 +13,19 @@ public class CardManager : MonoBehaviour, ISaveable
 
     // Contain room cards choice
     private Card[] mCurrentChoice;
+    private List<GameObject> mCurrentDeckUI;
     private int mNumberOfCards = 3;
 
     void OnEnable()
     {
+        mCurrentDeckUI = new List<GameObject>();
         // Should load from file 
         mDeckOfCards = new List<Card>();
     }
 
-    public Card[] SpawnCard()
+    private Card[] SpawnCard()
     {
+        // Generate new cards
         mCurrentChoice = new Card[mNumberOfCards];
 
         for (int i = 0; i < mNumberOfCards; i++)
@@ -37,9 +42,45 @@ public class CardManager : MonoBehaviour, ISaveable
         player.pushCard(mCurrentChoice[whichCard]);
     }
 
-    private void ReplaceCard(int whichCard)
+    // UI Side
+    public void CreateCardUI(GameObject canvas, LevelManager levelManager)
     {
+        // Delete from UI first
+        RemoveCardsUI();
 
+        // Generate Cards
+        Card[] cCards = SpawnCard();
+
+        // Create as many Prefabas as there is Cards
+        int posX = -250;
+        for (int i = 0; i < cCards.Length; i++)
+        {
+            GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Cards/CardTemplate");
+            GameObject card = GameObject.Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            card.transform.SetParent(canvas.transform);
+
+            RectTransform uiTransform = card.GetComponent<RectTransform>();
+            uiTransform.anchoredPosition = new Vector2(posX, 0);
+            posX += 250;
+
+            Button btn = card.GetComponent<Button>();
+            // Text cText = btn.GetComponent<Text>();
+            TextMeshProUGUI btnText = btn.GetComponentInChildren<TextMeshProUGUI>();
+            btnText.text = cCards[i].ToCardText();
+
+            int iCopy = i;
+            btn.onClick.AddListener(() => levelManager.ChooseCard(iCopy));
+            mCurrentDeckUI.Add(card);
+        }
+
+    }
+
+    private void RemoveCardsUI()
+    {
+        foreach (GameObject item in mCurrentDeckUI)
+        {
+            GameObject.Destroy(item);
+        }
     }
 
     public List<Card> getDeckOfCards()
