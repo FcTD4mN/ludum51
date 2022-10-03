@@ -138,7 +138,8 @@ public class LevelManager : MonoBehaviour
 
         // Player
         GameManager.mInstance.mThePlayer.Reset();
-        GameObject area = GameObject.Find("SpawnAreas/" + whichLevel + "-Player");
+        Debug.Log( "SpawnAreas/SpawnPlayer" + whichLevel + "-Player" );
+        GameObject area = GameObject.Find("SpawnAreas/SpawnPlayer/" + whichLevel + "-Player");
         Debug.Assert(area != null);
         GameManager.mInstance.mThePlayer.transform.position = new Vector3(area.transform.position.x, area.transform.position.y, -1);
 

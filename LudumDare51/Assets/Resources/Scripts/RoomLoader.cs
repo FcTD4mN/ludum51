@@ -22,12 +22,21 @@ public class RoomLoader : MonoBehaviour
     }
 
     /*
-    * Used for scene transition 
+    * Used for scene transition
     * Using next Scene order
     */
     public void LoadNextScene()
     {
         StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
+    }
+
+    /*
+    * Used for scene transition
+    * Using next Scene order
+    */
+    public void LoadPreviousScene()
+    {
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex - 1));
     }
 
     public IEnumerator LoadScene(int whichScene)
@@ -43,7 +52,7 @@ public class RoomLoader : MonoBehaviour
     }
 
     /*
-    * Used for scene transition 
+    * Used for scene transition
     * Using next Scene order
     */
     public void LoadNextScene(string sName)

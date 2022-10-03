@@ -10,8 +10,8 @@ public class EnnemyManager : MonoBehaviour
 
     public void Initialize()
     {
-        mAllEnnemies = new List<GameObject>(); 
-    } 
+        mAllEnnemies = new List<GameObject>();
+    }
 
 
     //========================================
@@ -19,25 +19,25 @@ public class EnnemyManager : MonoBehaviour
     //========================================
     public void SpawnEnnemies( int level, int basicCount, int shooterCount )
     {
-        GameObject area = GameObject.Find( "SpawnAreas/" + level + "-Ennemies" );
+        GameObject area = GameObject.Find( "SpawnAreas/SpawnEnnemies/" + level + "-Ennemies" );
         Debug.Assert( area != null );
 
         Rect areaBBox = Utilities.GetBBoxFromTransform( area );
- 
+
         for( int i = 0; i < basicCount; ++i )
-        { 
+        {
             SpawnStandard( GetValidRandomPointInArea( areaBBox ) );
         }
 
         for( int i = 0; i < shooterCount; ++i )
-        { 
+        {
             SpawnShooter( GetValidRandomPointInArea( areaBBox ) );
-        } 
+        }
     }
 
     public void SpawnBoss1()
     {
-        GameObject area = GameObject.Find( "SpawnAreas/Boss1" );
+        GameObject area = GameObject.Find( "SpawnAreas/SpawnEnnemies/Boss1" );
         Vector3 location = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
 
         GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/Boss1");
