@@ -76,6 +76,7 @@ public class EnnemyManager : MonoBehaviour
     {
         Vector3 playerPosition = GameManager.mInstance.mThePlayer.transform.position;
         Tilemap tileMapPoison = GameObject.Find( "Grid/Tilemap_Poison" ).GetComponent<Tilemap>();
+        Tilemap tileMapWalls = GameObject.Find( "Grid/Tilemap_Walls" ).GetComponent<Tilemap>();
 
         Vector3 randomPoint = new Vector3( 0, 0, 0 );
         bool isOk = false;
@@ -84,6 +85,7 @@ public class EnnemyManager : MonoBehaviour
             randomPoint = GetRandomPoint( area );
             isOk = (playerPosition - randomPoint).magnitude > mMinDistanceFromPlayer;
             isOk = isOk && tileMapPoison.GetTile( new Vector3Int( (int)randomPoint.x, (int)randomPoint.y, 0 ) ) == null;
+            isOk = isOk && tileMapWalls.GetTile( new Vector3Int( (int)randomPoint.x, (int)randomPoint.y, 0 ) ) == null;
         }
 
         return  randomPoint;

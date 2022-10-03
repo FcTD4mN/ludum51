@@ -18,6 +18,7 @@ public class LevelManager : MonoBehaviour
 
     // Current Room Number
     private int currentRoom = 1;
+    static public int chapterNumber = 1;
 
     // UI Elements
     private GameObject canvas;
@@ -130,8 +131,8 @@ public class LevelManager : MonoBehaviour
     {
         // int ennemyBasicCount = 4;
         // int ennemyShooterCount = 2;
-        int ennemyBasicCount = Math.Max(whichLevel + 2, 0);
-        int ennemyShooterCount = Math.Max(whichLevel - 4, 0);
+        int ennemyBasicCount = Math.Max((whichLevel + 2) * chapterNumber, 0);
+        int ennemyShooterCount = Math.Max((whichLevel - 4) * chapterNumber, 0);
 
         // Projectiles
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
@@ -150,9 +151,9 @@ public class LevelManager : MonoBehaviour
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
 
-        if( currentRoom % 10 == 0)
+        if( currentRoom == 10)
         {
-            GameManager.mInstance.mEnnemyManager.SpawnBoss( currentRoom / 10 );
+            GameManager.mInstance.mEnnemyManager.SpawnBoss( chapterNumber );
         }
         else
         {
@@ -191,7 +192,7 @@ public class LevelManager : MonoBehaviour
         cardCanvas.SetActive(true);
 
         // Generate Cards
-        mCardManager.CreateCardUI(cardCanvas, this);
+        mCardManager.CreateCardUI(cardCanvas, this, currentRoom == 10);
     }
 
     public void ChooseCard(int whichCard)
@@ -200,26 +201,36 @@ public class LevelManager : MonoBehaviour
         mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
 
         // Load + Set-up Next Room
-        NextRoom();
+        if( currentRoom == 10 )
+        {
+            FinishChapter();
+        }
+        else
+        {
+            NextRoom();
 
-        // Load Animation
-        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
-        rL.LoadNextRoom();
+            // Load Animation
+            RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
+            rL.LoadNextRoom();
 
-        // Resume timer etc...
-        StartCoroutine(NextRoomCoroutine(rL.transitionTime / 2));
+            // Resume timer etc...
+            StartCoroutine(NextRoomCoroutine(rL.transitionTime / 2));
+        }
     }
 
     void NextRoom()
     {
+        float xPos = (currentRoom) * 28;
         currentRoom += 1;
-        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 28, 0f, -10f);
+        mainCamera.transform.position = new Vector3(xPos, 0f, -10f);
     }
 
     private void FinishChapter()
     {
-        // Load menu scene - TODO
-        // SceneManager.LoadScene("ChapterSelection");
+        // Load menu scene
+        chapterNumber += 1;
+        currentRoom = 1;
+        mRoomLoader.GetComponent<RoomLoader>().LoadNextScene();
     }
 
     public void FinishRun()
