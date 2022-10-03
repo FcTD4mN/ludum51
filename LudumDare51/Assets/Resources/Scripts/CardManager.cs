@@ -61,7 +61,7 @@ public class CardManager : MonoBehaviour, ISaveable
         Card[] cCards = SpawnCard(newChapter);
 
         // Create as many Prefabas as there is Cards
-        int posX = -250;
+        int posX = -325;
         for (int i = 0; i < cCards.Length; i++)
         {
             GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Cards/CardTemplate");
@@ -70,7 +70,40 @@ public class CardManager : MonoBehaviour, ISaveable
 
             RectTransform uiTransform = card.GetComponent<RectTransform>();
             uiTransform.anchoredPosition = new Vector2(posX, 0);
-            posX += 250;
+            posX += 325;
+
+            // Change color
+            GameObject bgImg = card.transform.Find("Image").gameObject;
+            Image img = bgImg.GetComponent<Image>();
+
+            switch (cCards[i].mPowerUpCategory)
+            {
+                case (PowerUpCategory.Health):
+                    img.color = new Color32(242, 0, 0, 100);
+                    break;
+                case (PowerUpCategory.Speed):
+                    img.color = new Color32(90, 151, 250, 100);
+                    break;
+                case (PowerUpCategory.WeaponSpeed):
+                    img.color = new Color32(196, 90, 250, 100);
+                    break;
+                case (PowerUpCategory.Projectile):
+                    img.color = new Color32(250, 196, 90, 100);
+                    break;
+                case (PowerUpCategory.Cooldown):
+                    img.color = new Color32(133, 133, 133, 100);
+                    break;
+                case (PowerUpCategory.Zone):
+                    img.color = new Color32(36, 0, 218, 100);
+                    break;
+                case (PowerUpCategory.Damage):
+                    img.color = new Color32(218, 127, 0, 100);
+                    break;
+                case (PowerUpCategory.Pierce):
+                    img.color = new Color32(218, 15, 192, 100);
+                    break;
+            }
+
 
             Button btn = card.GetComponent<Button>();
             // Text cText = btn.GetComponent<Text>();
@@ -82,6 +115,7 @@ public class CardManager : MonoBehaviour, ISaveable
             mCurrentDeckUI.Add(card);
         }
     }
+
 
     private void RemoveCardsUI()
     {

@@ -74,12 +74,12 @@ public class Card : ISaveable
 
     public override String ToString()
     {
-        return "Power Up : " + mPowerUpCategory + " / Type : " + mType + " / Points : " + mPoints;
+        return "Power Up : " + mPowerUpCategory.ToString().ToUpper() + " / Type : " + mType + " / Points : " + mPoints;
     }
 
     public String ToCardText()
     {
-        return mPowerUpCategory + "\r\n+" + mType + " / " + mPoints;
+        return mPowerUpCategory.ToString().ToUpper() + "\r\n\r\n" + mType + " / " + mPoints;
     }
 
     // SAVE DATA - TOJSON
@@ -180,7 +180,7 @@ class CardList
         CreateCard(true, PowerUpCategory.WeaponSpeed, StatModType.PercentMult, 1.5f - 1);
         CreateCard(true, PowerUpCategory.Cooldown, StatModType.PercentMult, 0.5f - 1);
         CreateCard(true, PowerUpCategory.Cooldown, StatModType.Flat, -1);
-        CreateCard(true, PowerUpCategory.Speed, StatModType.Flat, 1);
+        CreateCard(true, PowerUpCategory.Speed, StatModType.Flat, 0.5f);
         CreateCard(true, PowerUpCategory.Speed, StatModType.PercentMult, 1.2f - 1);
         CreateCard(true, PowerUpCategory.Zone, StatModType.Flat, 1);
         CreateCard(true, PowerUpCategory.Zone, StatModType.PercentMult, 1.2f - 1);

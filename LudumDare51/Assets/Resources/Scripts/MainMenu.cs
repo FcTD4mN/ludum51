@@ -30,6 +30,9 @@ public class MainMenu : MonoBehaviour
     {
         // Make sure Scene are in the right order
         GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadNextScene();
+
+        // Clear run data
+        SaveDataManager.RemoveAllData("SaveGameData.json");
     }
 
 
