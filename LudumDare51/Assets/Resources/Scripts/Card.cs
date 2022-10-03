@@ -16,25 +16,25 @@ public class Card : ISaveable
     {
         mId = DateTime.Now.ToString("yyyyMMddHHmmssffff");
         // Card factory cheap
-        int rnd = UnityEngine.Random.Range(1, Enum.GetNames(typeof(PowerUpCategory)).Length);
-        mPowerUpCategory = (PowerUpCategory)rnd;
+        // int rnd = UnityEngine.Random.Range(1, Enum.GetNames(typeof(PowerUpCategory)).Length);
+        // mPowerUpCategory = (PowerUpCategory)rnd;
 
-        rnd = UnityEngine.Random.Range(1, Enum.GetNames(typeof(StatModType)).Length);
-        mType = (StatModType)rnd;
+        // rnd = UnityEngine.Random.Range(1, Enum.GetNames(typeof(StatModType)).Length);
+        // mType = (StatModType)rnd;
 
-        // Get a random type
-        int rndType = GetRandomType();
+        // // Get a random type
+        // int rndType = GetRandomType();
 
-        mPoints = Mathf.Round(UnityEngine.Random.Range(0.05f, 0.2f) * 100f) / 100f;
-        if (rndType == 1)
-        {
-            mType = StatModType.Flat;
-            mPoints = Mathf.Round(UnityEngine.Random.Range(0, 20) * 100f) / 100f;
-        }
-        else if (rndType == 2)
-            mType = StatModType.PercentAdd;
-        else if (rndType == 3)
-            mType = StatModType.PercentMult;
+        // mPoints = Mathf.Round(UnityEngine.Random.Range(0.05f, 0.2f) * 100f) / 100f;
+        // if (rndType == 1)
+        // {
+        //     mType = StatModType.Flat;
+        //     mPoints = Mathf.Round(UnityEngine.Random.Range(0, 20) * 100f) / 100f;
+        // }
+        // else if (rndType == 2)
+        //     mType = StatModType.PercentAdd;
+        // else if (rndType == 3)
+        //     mType = StatModType.PercentMult;
 
         // flat 0 - 20
         // percentAdd 0.05 - 0.2
@@ -92,7 +92,7 @@ public class Card : ISaveable
         cardData.powerUpCategory = (int)mPowerUpCategory;
         cardData.type = (int)mType;
 
-        // Push to DeckOfCards 
+        // Push to DeckOfCards
         dataSet.mDeckOfCards.Add(cardData);
     }
 
@@ -119,7 +119,8 @@ public enum PowerUpCategory
     Projectile = 4,
     Cooldown = 5,
     Zone = 6,
-    Damage = 7
+    Damage = 7,
+    Pierce = 8
 }
 
 class Tuplez
@@ -137,5 +138,79 @@ class Tuplez
     public override string ToString()
     {
         return probability + "/" + value;
+    }
+}
+
+
+
+
+
+class CardList
+{
+    private List<Card> mCards;
+    private List<Card> mCardsSpecial;
+    private int mIDCounter = 1;
+
+    private void CreateCard( bool normal, PowerUpCategory cat, StatModType type, float value )
+    {
+        Card card = new Card( mIDCounter );
+        mIDCounter += 1;
+        card.mPowerUpCategory = cat;
+        card.mType = type;
+        card.mPoints = value;
+
+        if( normal )
+            mCards.Add( card );
+        else
+            mCardsSpecial.Add( card );
+
+    }
+
+    public CardList()
+    {
+        mCards          = new List<Card>();
+        mCardsSpecial   = new List<Card>();
+
+        // NORMAL ===============================================
+        CreateCard( true, PowerUpCategory.Health, StatModType.Flat, 50 );
+        CreateCard( true, PowerUpCategory.Health, StatModType.PercentMult, 1.2f -1 );
+        CreateCard( true, PowerUpCategory.Damage, StatModType.PercentMult, 1.2f -1 );
+        CreateCard( true, PowerUpCategory.Damage, StatModType.Flat, 5 );
+        CreateCard( true, PowerUpCategory.WeaponSpeed, StatModType.Flat, 1 );
+        CreateCard( true, PowerUpCategory.WeaponSpeed, StatModType.PercentMult, 1.5f -1 );
+        CreateCard( true, PowerUpCategory.Cooldown, StatModType.PercentMult, 0.5f -1 );
+        CreateCard( true, PowerUpCategory.Cooldown, StatModType.Flat, -1 );
+        CreateCard( true, PowerUpCategory.Speed, StatModType.Flat, 1 );
+        CreateCard( true, PowerUpCategory.Speed, StatModType.PercentMult, 1.2f -1 );
+        CreateCard( true, PowerUpCategory.Zone, StatModType.Flat, 1 );
+        CreateCard( true, PowerUpCategory.Zone, StatModType.PercentMult, 1.2f -1 );
+
+
+
+        // SPECIAL ===============================================
+        CreateCard( false, PowerUpCategory.Health, StatModType.Flat, 500 );
+        CreateCard( false, PowerUpCategory.Health, StatModType.PercentMult, 2 -1 );
+        CreateCard( false, PowerUpCategory.Damage, StatModType.PercentMult, 2 -1 );
+        CreateCard( false, PowerUpCategory.Damage, StatModType.Flat, 50 );
+        CreateCard( false, PowerUpCategory.Projectile, StatModType.Flat, 10 );
+        CreateCard( false, PowerUpCategory.Projectile, StatModType.PercentMult, 2 -1 );
+        CreateCard( false, PowerUpCategory.WeaponSpeed, StatModType.Flat, 2 );
+        CreateCard( false, PowerUpCategory.WeaponSpeed, StatModType.PercentMult, 2 -1 );
+        CreateCard( false, PowerUpCategory.Zone, StatModType.Flat, 5 );
+        CreateCard( false, PowerUpCategory.Zone, StatModType.PercentMult, 2f -1 );
+        CreateCard( false, PowerUpCategory.Pierce, StatModType.Flat, 1 );
+    }
+
+
+    public Card GetRandomNormalCard()
+    {
+        int random = UnityEngine.Random.Range( 0, mCards.Count );
+        return  mCards[random];
+    }
+
+    public Card GetRandomSpecialCard()
+    {
+        int random = UnityEngine.Random.Range( 0, mCardsSpecial.Count );
+        return  mCardsSpecial[random];
     }
 }
