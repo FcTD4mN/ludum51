@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
         movementInput = Vector2.zero;
         gameObject.SetActive(true);
         mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
-        animator.Play("Player_Idle", 0); // animator is null here, don't know why
+        animator.Play("Player_Idle", 0);
 
         ResetShooter();
         UpdateHealthBar();
@@ -183,11 +183,12 @@ public class PlayerController : MonoBehaviour
     {
         mShooter.ResetShooter();
 
-        mShooter.mMultiplierDamage = 10f;
+        mShooter.mMultiplierDamage = 1f;
         mShooter.mMultiplierArea = 1f;
         mShooter.mMultiplierReloadTime = 1f;
         mShooter.mMultiplierFireRate = 1f;
         mShooter.mMultiplierProjectileSpeed = 1f;
+        mShooter.mMultiplierProjectileCount = 1;
     }
 
     void UpdateIShooter()
@@ -225,28 +226,31 @@ public class PlayerController : MonoBehaviour
     {
         Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if (projectile != null)
+        if (projectile == null || projectile.mWeapon.mShooter == null)
+            return;
+
+        Shooter shooter = projectile.mWeapon.mShooter;
+        if( shooter.gameObject == null  || shooter == null )
+            return;
+
+        bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
+
+        if( shooterIsEnnemy || shooter.tag == "BossGun" )
         {
-            Shooter shooter = projectile.mWeapon.mShooter;
-            bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
-
-            if( shooterIsEnnemy || shooter.tag == "BossGun" )
+            mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
+            UpdateHealthBar();
+            if ( mKillable.IsDead() )
             {
-                mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
-                UpdateHealthBar();
-                if ( mKillable.IsDead() )
+                PlayDeathAnimation( ()=>
                 {
-                    PlayDeathAnimation( ()=>
-                    {
-                        gameObject.SetActive(false);
-                        GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
-                    });
-                }
+                    gameObject.SetActive(false);
+                    GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
+                });
+            }
 
-                if (!projectile.mWeapon.mPierce)
-                {
-                    GameObject.Destroy(projectile.gameObject);
-                }
+            if (!projectile.mWeapon.mPierce)
+            {
+                GameObject.Destroy(projectile.gameObject);
             }
         }
     }
@@ -283,6 +287,8 @@ public class PlayerController : MonoBehaviour
         mLabelWeaponSpeed.text = "FireRate: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
         mLabelProjectileSpeed.text = "ProjectileSpeed: " + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
         mLabelReloadTime.text = "ReloadTime: " + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
+
+        UpdateHealthBar();
     }
 
 }

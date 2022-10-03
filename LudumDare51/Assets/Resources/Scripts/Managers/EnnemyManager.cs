@@ -35,12 +35,12 @@ public class EnnemyManager : MonoBehaviour
         }
     }
 
-    public void SpawnBoss1()
+    public void SpawnBoss( int number )
     {
-        GameObject area = GameObject.Find( "SpawnAreas/SpawnEnnemies/Boss1" );
-        Vector3 location = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
+        GameObject area = GameObject.Find( "SpawnAreas/SpawnEnnemies/Boss" + number );
+        Vector3 location = new Vector3( area.transform.position.x, area.transform.position.y, -2 );
 
-        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/Boss1");
+        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/Boss" + number);
         GameObject ennemy = GameObject.Instantiate( ennemyPrefab, location, Quaternion.Euler(0, 0, 0) );
         ennemy.GetComponent<Enemy>().Initialize();
         ennemy.GetComponent<Boss1AI>().Initialize();
@@ -76,6 +76,7 @@ public class EnnemyManager : MonoBehaviour
     {
         Vector3 playerPosition = GameManager.mInstance.mThePlayer.transform.position;
         Tilemap tileMapPoison = GameObject.Find( "Grid/Tilemap_Poison" ).GetComponent<Tilemap>();
+        Tilemap tileMapWalls = GameObject.Find( "Grid/Tilemap_Walls" ).GetComponent<Tilemap>();
 
         Vector3 randomPoint = new Vector3( 0, 0, 0 );
         bool isOk = false;
@@ -84,6 +85,7 @@ public class EnnemyManager : MonoBehaviour
             randomPoint = GetRandomPoint( area );
             isOk = (playerPosition - randomPoint).magnitude > mMinDistanceFromPlayer;
             isOk = isOk && tileMapPoison.GetTile( new Vector3Int( (int)randomPoint.x, (int)randomPoint.y, 0 ) ) == null;
+            isOk = isOk && tileMapWalls.GetTile( new Vector3Int( (int)randomPoint.x, (int)randomPoint.y, 0 ) ) == null;
         }
 
         return  randomPoint;

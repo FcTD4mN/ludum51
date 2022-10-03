@@ -19,9 +19,6 @@ public class SaveData
 
     public int mNumberOfCards;
 
-    // Level - Unlock chapter
-    public int level;
-
     public string ToJson()
     {
         return JsonUtility.ToJson(this);

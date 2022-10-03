@@ -46,19 +46,35 @@ public class Shooter: MonoBehaviour
     {
         if( mWeapon.mBullets > 0 )
         {
+            Debug.DrawLine( from, to, Color.green, 10 );
+
             if( mMultiplierProjectileCount == 1 )
             {
                 mWeapon.SpawnProjectile( from, to );
             }
             else
             {
-                float halfAngle = 10f;
-                Vector2 pointTo = Utilities.RotatePointAroundPivot( to, from, halfAngle * (int)(mMultiplierProjectileCount/2) );
-                mWeapon.SpawnProjectile( from, pointTo );
+                bool evenCount = (mMultiplierProjectileCount%2 == 0);
 
+                float distanceFromPlayer = (to - from).magnitude;
+                float minDistance = 1f;
+                float maxDistance = 12f;
+                float angleMax = 20f;
+                float angleMin = 2f;
+                float distRatio = Mathf.Min( (distanceFromPlayer - minDistance) / (maxDistance - minDistance), 1 );
+
+                // Reversed as we want to be bigger when closer, so small values 0.01 = closer to max
+                float angle = angleMin*distRatio + angleMax*(1-distRatio);
+
+                int preCount = (int)(mMultiplierProjectileCount/2) - 1;
+                float firstAngle = evenCount ? angle/2f : angle;
+                firstAngle += angle * preCount;
+
+                Vector2 pointTo = Utilities.RotatePointAroundPivot( to, from, firstAngle );
+                mWeapon.SpawnProjectile( from, pointTo );
                 for (int i = 1; i < mMultiplierProjectileCount; i++)
                 {
-                    pointTo = Utilities.RotatePointAroundPivot( pointTo, from, -halfAngle );
+                    pointTo = Utilities.RotatePointAroundPivot( pointTo, from, -angle );
                     mWeapon.SpawnProjectile( from, pointTo );
                 }
             }

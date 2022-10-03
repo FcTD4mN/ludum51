@@ -11,12 +11,14 @@ public class RoomLoader : MonoBehaviour
     // Use for IG transition
     public void FinishCurrentRoom()
     {
+        Debug.Log("START animation");
         // Play animation
         transition.SetTrigger("Start");
     }
 
     public void LoadNextRoom()
     {
+        Debug.Log("Launch END animation");
         // Play animation
         transition.SetTrigger("End");
     }

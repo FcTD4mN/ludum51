@@ -5,31 +5,31 @@ using UnityEngine;
 public class Rifle : Weapon
 {
     public Rifle( MonoBehaviour parent, Shooter shooter ) : base( parent, shooter )
-    { 
-        mBaseDamage = 2f;
+    {
+        mBaseDamage = 10f;
         mBaseArea = 1f;
         mBaseReloadTime = 2f;
         mBaseFireRatePerSec = 3f;
         mBaseProjectileSpeed = 3f;
-        
+
         mPierce = false;
 
         mBaseBullets = 30;
         mBullets = 30;
     }
 
-    
+
     override public void SpawnProjectile( Vector2 at, Vector2 to )
     {
         Vector2 direction = to - at;
         float angle = Mathf.Atan2( direction.y, direction.x );
 
-        float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed; 
-        float projectileSize = mBaseArea * mShooter.mMultiplierArea; 
+        float projectileSpeed = mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
+        float projectileSize = mBaseArea * mShooter.mMultiplierArea;
 
         GameObject projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Projectile-Rifle");
         GameObject projectile = GameObject.Instantiate( projectilePrefab, new Vector3( at.x, at.y, -1 ), Quaternion.Euler(0, 0, 90 + Utilities.RadToDeg(angle)));
-        projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x, 
+        projectile.transform.localScale = new Vector3( projectileSize * projectile.transform.localScale.x,
                                                        projectileSize * projectile.transform.localScale.y,
                                                        projectile.transform.localScale.z );
         Projectile projectileTyped = projectile.GetComponent<Projectile>();

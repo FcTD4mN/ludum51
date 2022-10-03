@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Ludum51.Player;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class LevelManager : MonoBehaviour
 
     // Current Room Number
     private int currentRoom = 1;
+    static public int chapterNumber = 1;
 
     // UI Elements
     private GameObject canvas;
@@ -75,7 +77,7 @@ public class LevelManager : MonoBehaviour
             mGameTime = 10;
             mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(Mathf.Round(mGameTime));
             UpdateTimer();
-            BuildRoom(currentRoom);
+            BuildRoom(currentRoom, true);
         }));
 
     }
@@ -119,42 +121,61 @@ public class LevelManager : MonoBehaviour
     // What happens if you run of out time (or die)
     public void Death(eDeathCause cause)
     {
+        // Clean Ennemies
+        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        // Clean Projectiles
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+
         // Pause le jeu
-        Time.timeScale = 0;
+        // Time.timeScale = 0;
+
         gameOverPanel.SetActive(true);
     }
 
 
-    private void BuildRoom(int whichLevel)
+    private void BuildRoom(int whichLevel, bool reset)
     {
         // int ennemyBasicCount = 4;
         // int ennemyShooterCount = 2;
-        int ennemyBasicCount = Math.Max(whichLevel + 2, 0);
-        int ennemyShooterCount = Math.Max(whichLevel - 4, 0);
-
-        // Projectiles
-        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+        int ennemyBasicCount = Math.Max((whichLevel + 2) * chapterNumber, 0);
+        int ennemyShooterCount = Math.Max((whichLevel - 4) * chapterNumber, 0);
 
         // Player
-        GameManager.mInstance.mThePlayer.Reset();
-        Debug.Log("SpawnAreas/SpawnPlayer" + whichLevel + "-Player");
+        Weapon playerWeapon = GameManager.mInstance.mThePlayer.GetComponent<Shooter>().GetWeapon();
+        playerWeapon.Reset(); // This will just reload the gun, not reset the stats
+
+        if (reset)
+            GameManager.mInstance.mThePlayer.Reset(); // This will reset all stats
+
         GameObject area = GameObject.Find("SpawnAreas/SpawnPlayer/" + whichLevel + "-Player");
         Debug.Assert(area != null);
         GameManager.mInstance.mThePlayer.transform.position = new Vector3(area.transform.position.x, area.transform.position.y, -1);
 
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
+        // Projectiles
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+
+        if (currentRoom == 10)
+        {
+            GameManager.mInstance.mEnnemyManager.SpawnBoss(chapterNumber);
+        }
+        else
+        {
+            GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
+        }
     }
 
     public void Retry()
     {
         // Reset timer and hide death screen
-        gameOverPanel.SetActive(false);
-        ResetTimer();
+        // gameOverPanel.SetActive(false);
+        // ResetTimer();
+        // Time.timeScale = 1;
+        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
+        rL.LoadNextScene(SceneManager.GetActiveScene().name);
 
-        Time.timeScale = 1;
-        BuildRoom(currentRoom);
+        // BuildRoom(currentRoom, true);
     }
 
     // Current room finish
@@ -168,7 +189,7 @@ public class LevelManager : MonoBehaviour
         rL.FinishCurrentRoom();
 
         // Load Room Features
-        StartCoroutine(FinishRoomCoroutine(rL.transitionTime / 2));
+        StartCoroutine(FinishRoomCoroutine(rL.transitionTime));
     }
 
     // Show Card Panel
@@ -178,29 +199,59 @@ public class LevelManager : MonoBehaviour
         cardCanvas.SetActive(true);
 
         // Generate Cards
-        mCardManager.CreateCardUI(cardCanvas, this);
+        mCardManager.CreateCardUI(cardCanvas, this, currentRoom == 10);
     }
 
     public void ChooseCard(int whichCard)
     {
+        Debug.Log("We chose a card!");
         // Equip the card
         mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
 
         // Load + Set-up Next Room
-        NextRoom();
+        if (currentRoom == 10)
+        {
+            FinishChapter();
+        }
+        else
+        {
+            NextRoom();
 
-        // Load Animation
-        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
-        rL.LoadNextRoom();
+            // Load Animation
+            RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
+            rL.LoadNextRoom();
 
-        // Resume timer etc...
-        StartCoroutine(NextRoomCoroutine(rL.transitionTime / 2));
+            // Resume timer etc...
+            StartCoroutine(NextRoomCoroutine(rL.transitionTime));
+        }
     }
 
     void NextRoom()
     {
+        float xPos = (currentRoom) * 28;
         currentRoom += 1;
-        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 28, 0f, -10f);
+        mainCamera.transform.position = new Vector3(xPos, 0f, -10f);
+    }
+
+    private void FinishChapter()
+    {
+        // Load menu scene
+        chapterNumber += 1;
+        currentRoom = 1;
+        mRoomLoader.GetComponent<RoomLoader>().LoadNextScene();
+    }
+
+    public void FinishRun()
+    {
+        // Level +1
+        GameStat gStat = new GameStat();
+        gStat.mLevel = 1;
+        if (FileManager.LoadFromFile("SaveGlobalData.json", out var gameData))
+            gStat.LoadFromJson(gameData);
+
+        gStat.mLevel += 1;
+        if (FileManager.WriteToFile("SaveGlobalData.json", gStat.ToJson()))
+            Debug.Log("NoWarning");
     }
 
     // Coroutines :
@@ -210,6 +261,7 @@ public class LevelManager : MonoBehaviour
         canvas.SetActive(false);
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+        GameManager.mInstance.mThePlayer.transform.position = new Vector3(-10, -10, -1);
         mCardSelection = true;
 
         // Wait
@@ -234,7 +286,7 @@ public class LevelManager : MonoBehaviour
         ResetTimer();
 
         // Handle enemies spawn
-        BuildRoom(currentRoom);
+        BuildRoom(currentRoom, false);
     }
 
 }

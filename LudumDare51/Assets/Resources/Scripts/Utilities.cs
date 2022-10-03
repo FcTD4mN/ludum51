@@ -8,7 +8,7 @@ public class Utilities : MonoBehaviour
 
     //========================================
     // Timer Tools
-    //======================================== 
+    //========================================
 
 
     public static IEnumerator ExecuteAfter(float time, Action onFinish)
@@ -22,7 +22,7 @@ public class Utilities : MonoBehaviour
 
     //========================================
     // Geometry
-    //======================================== 
+    //========================================
     public static Rect Intersection(Rect rectA, Rect rectB)
     {
         float xMin = Math.Max(rectA.xMin, rectB.xMin);
@@ -142,19 +142,18 @@ public class Utilities : MonoBehaviour
 
     }
 
-    public static Vector3 RotatePointAroundPivot( Vector3 point, Vector3 pivot, Vector3 angles )  
+    public static Vector3 RotatePointAroundPivot( Vector3 point, Vector3 pivot, Vector3 angles )
     {
         Vector3 dir = point - pivot;            // get point direction relative to pivot
         dir = Quaternion.Euler(angles) * dir;   // rotate it
-        point = dir + pivot;                    // calculate rotated point
-        return  point;                          // return it
+        return  dir + pivot;                    // calculate rotated point
     }
 
-    public static Vector2 RotatePointAroundPivot( Vector2 point, Vector2 pivot, float angle )  
+    public static Vector3 RotatePointAroundPivot( Vector2 point, Vector2 pivot, float angle )
     {
-        return  RotatePointAroundPivot( new Vector3( point.x, point.y, 0 ), 
-                                        new Vector3( pivot.x, point.y, 0 ), 
-                                        new Vector3( 1, 1, angle ) );
+        return  RotatePointAroundPivot( new Vector3( point.x, point.y, 0 ),
+                                        new Vector3( pivot.x, pivot.y, 0 ),
+                                        new Vector3( 0, 0, angle ) );
     }
 
 
@@ -162,7 +161,7 @@ public class Utilities : MonoBehaviour
 
     //========================================
     // Animation
-    //======================================== 
+    //========================================
     public static AnimationClip GetAnimationByName(String name, Animator animator)
     {
         AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
