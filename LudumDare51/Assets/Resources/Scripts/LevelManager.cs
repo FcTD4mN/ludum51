@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Ludum51.Player;
@@ -17,7 +18,7 @@ public class LevelManager : MonoBehaviour
     private float mGameTime = 10;
 
     // Current Room Number
-    private int currentRoom = 10;
+    private int currentRoom = 1;
     static public int chapterNumber = 1;
 
     // UI Elements
@@ -80,6 +81,8 @@ public class LevelManager : MonoBehaviour
             BuildRoom(currentRoom, true);
         }));
 
+        // Reset player stats
+        LoadPlayerData(mPlayer);
     }
 
     void FixedUpdate()
@@ -87,6 +90,14 @@ public class LevelManager : MonoBehaviour
         // Timer
         mGameTime -= Time.fixedDeltaTime;
         // use coroutine instead ou round
+    }
+
+    private void LoadPlayerData(GameObject thePlayer)
+    {
+        // Load Card from file
+        List<ISaveable> loadData = new List<ISaveable>();
+        loadData.Add(mCardManager);
+        SaveDataManager.LoadJsonData(loadData, "SaveGameData.json");
     }
 
     public IEnumerator getTimerCoroutine()
@@ -133,7 +144,10 @@ public class LevelManager : MonoBehaviour
                 GameManager.mInstance.mThePlayer.transform.position = new Vector3(-10, -10, -1);
             });
         }
+
         gameOverPanel.SetActive(true);
+
+        SaveDataManager.RemoveAllData("SaveGameData.json");
     }
 
 
@@ -168,10 +182,6 @@ public class LevelManager : MonoBehaviour
         {
             GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
         }
-
-
-        float xPos = (currentRoom - 1) * 28;
-        mainCamera.transform.position = new Vector3(xPos, 0f, -10f);
     }
 
     public void Retry()

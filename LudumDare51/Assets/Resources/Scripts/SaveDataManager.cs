@@ -41,7 +41,17 @@ public static class SaveDataManager
                 saveable.LoadFromSaveData(sd);
             }
 
-            Debug.Log("Load complete");
+            // Debug.Log("Load complete");
+        }
+    }
+
+    public static void RemoveAllData(string fileName)
+    {
+        SaveData sd = new SaveData();
+
+        if (FileManager.WriteToFile(fileName, sd.ToJson()))
+        {
+            Debug.Log("Save successful");
         }
     }
 }

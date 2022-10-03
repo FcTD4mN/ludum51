@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     // Objects
     public PlayerController mThePlayer;
+    public GameObject mPlayerObject;
 
 
     // Scenes Data
@@ -35,11 +36,11 @@ public class GameManager : MonoBehaviour
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
 
-        GameObject player = GameObject.Find("Player");
-        mThePlayer = player.GetComponent<PlayerController>();
-        Debug.Assert(mThePlayer && player, "Can't find player");
+        mPlayerObject = GameObject.Find("Player");
+        mThePlayer = mPlayerObject.GetComponent<PlayerController>();
+        Debug.Assert(mThePlayer && mPlayerObject, "Can't find player");
         mThePlayer.Initialize();
-        player.GetComponent<Ludum51.Player.Player>().Initialize();
+        mPlayerObject.GetComponent<Ludum51.Player.Player>().Initialize();
 
 
         // Get and initialize all managers
@@ -51,12 +52,14 @@ public class GameManager : MonoBehaviour
         Debug.Assert(mEnnemyManager != null);
         mEnnemyManager.Initialize();
 
+        mCardManager = transform.Find("CardManager")?.gameObject.GetComponent<CardManager>();
+        Debug.Assert(mCardManager != null);
+        mCardManager.Initialize();
+
         mLevelManager = transform.Find("LevelManager")?.gameObject.GetComponent<LevelManager>();
         Debug.Assert(mLevelManager != null);
         mLevelManager.Initialize();
 
-        mCardManager = transform.Find("CardManager")?.gameObject.GetComponent<CardManager>();
-        Debug.Assert(mCardManager != null);
     }
 
 
@@ -91,6 +94,7 @@ public class GameManager : MonoBehaviour
         List<ISaveable> saveData = new List<ISaveable>();
         saveData.Add(mCardManager);
 
-        SaveDataManager.SaveJsonData(mCardManager, "SaveGameData.json");
+        SaveDataManager.SaveJsonData(saveData, "SaveGameData.json");
     }
+
 }
