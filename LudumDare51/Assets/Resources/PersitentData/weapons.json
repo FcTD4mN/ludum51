@@ -1,0 +1,22 @@
+[
+    {
+        "Level": 1,
+        "Name": "Rifle"
+    },
+    {
+        "Level": 2,
+        "Name": "Sniper"
+    },
+    {
+        "Level": 3,
+        "Name": "Grenader-Launcher"
+    },
+    {
+        "Level": 4,
+        "Name": "Prison"
+    },
+    {
+        "Level": 5,
+        "Name": "Light-Saber"
+    }
+]

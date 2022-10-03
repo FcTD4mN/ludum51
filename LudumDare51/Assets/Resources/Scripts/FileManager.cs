@@ -37,4 +37,21 @@ public static class FileManager
             return false;
         }
     }
+
+    public static bool LoadFromFile(string path, string a_FileName, out string result)
+    {
+        var fullPath = Path.Combine(path, a_FileName);
+
+        try
+        {
+            result = File.ReadAllText(fullPath);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to read from {fullPath} with exception {e}");
+            result = "";
+            return false;
+        }
+    }
 }

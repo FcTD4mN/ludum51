@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+    public void Start()
+    {
+        FileManager.LoadFromFile("Assets\\Resources\\PersitentData", "weapons.json", out var json);
+        Debug.Log(json);
+    }
     public void PlayGame()
     {
         // Make sure Scene are in the right order
