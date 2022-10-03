@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
     private float mGameTime = 10;
 
     // Current Room Number
-    private int currentRoom = 10;
+    private int currentRoom = 1;
     static public int chapterNumber = 1;
 
     // UI Elements

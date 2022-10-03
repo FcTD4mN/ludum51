@@ -182,13 +182,6 @@ public class PlayerController : MonoBehaviour
     void ResetShooter()
     {
         mShooter.ResetShooter();
-
-        mShooter.mMultiplierDamage = 1f;
-        mShooter.mMultiplierArea = 1f;
-        mShooter.mMultiplierReloadTime = 1f;
-        mShooter.mMultiplierFireRate = 1f;
-        mShooter.mMultiplierProjectileSpeed = 1f;
-        mShooter.mMultiplierProjectileCount = 1;
     }
 
     void UpdateIShooter()
