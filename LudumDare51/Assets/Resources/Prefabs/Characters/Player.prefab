@@ -231,9 +231,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health:
     BaseValue: 0
-  Strength:
+  Damage:
     BaseValue: 0
-  Dexterity:
+  Speed:
+    BaseValue: 0
+  WeaponSpeed:
+    BaseValue: 0
+  Projectile:
+    BaseValue: 0
+  Cooldown:
+    BaseValue: 0
+  Zone:
     BaseValue: 0
 --- !u!114 &1611599870000505203
 MonoBehaviour:
@@ -266,3 +274,4 @@ MonoBehaviour:
   mMultiplierReloadTime: 1
   mMultiplierFireRate: 1
   mMultiplierProjectileSpeed: 1
+  mMultiplierProjectileCount: 1

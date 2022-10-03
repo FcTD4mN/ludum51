@@ -19,18 +19,27 @@ public class GameManager : MonoBehaviour
     public PlayerController mThePlayer;
 
 
+    // Scenes Data
+    // Rifle = 0
+    // Knife = 1
+    // Grenade = 2
+    public static int mWeaponChoice = 0;
+
+
     // ======================================
     // Initialization
     // ======================================
     void OnEnable()
     {
-        // If there is already an gamemanager instance 
+        Debug.Log( "Enable" );
+        // If there is already an gamemanager instance
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
 
         GameObject player = GameObject.Find("Player");
         mThePlayer = player.GetComponent<PlayerController>();
         Debug.Assert(mThePlayer && player, "Can't find player");
+        Debug.Log( "player.GetComponent<Ludum51.Player.Player>().Initialize();" );
         player.GetComponent<Ludum51.Player.Player>().Initialize();
         mThePlayer.Initialize();
 
