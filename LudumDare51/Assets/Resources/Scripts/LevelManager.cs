@@ -126,6 +126,16 @@ public class LevelManager : MonoBehaviour
         // Clean Projectiles
         GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
 
+        if (cause == eDeathCause.kTimeOut)
+        {
+            GameManager.mInstance.mThePlayer.PlayDeathAnimation(() =>
+            {
+                GameManager.mInstance.mThePlayer.transform.position = new Vector3(-10, -10, -1);
+            });
+        }
+
+
+
         // Pause le jeu
         // Time.timeScale = 0;
 
@@ -204,7 +214,6 @@ public class LevelManager : MonoBehaviour
 
     public void ChooseCard(int whichCard)
     {
-        Debug.Log("We chose a card!");
         // Equip the card
         mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
 
