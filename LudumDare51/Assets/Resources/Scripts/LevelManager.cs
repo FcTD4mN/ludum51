@@ -149,7 +149,15 @@ public class LevelManager : MonoBehaviour
 
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
-        GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
+
+        if( currentRoom % 10 == 0)
+        {
+            GameManager.mInstance.mEnnemyManager.SpawnBoss( currentRoom / 10 );
+        }
+        else
+        {
+            GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
+        }
     }
 
     public void Retry()

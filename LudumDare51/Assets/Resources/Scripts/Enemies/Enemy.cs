@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public float mSpeed = 1f;
     public float mBaseDamage = 1f;
+    public bool mFacesPlayer = false;
 
 
     private GameObject mHealthBar;
@@ -33,6 +34,18 @@ public class Enemy : MonoBehaviour
         float finalSpeed = Time.fixedDeltaTime * mSpeed;
 
         rb.velocity = new Vector2(direction.x * finalSpeed, direction.y * finalSpeed);
+
+        if( mFacesPlayer )
+        {
+            Vector3 playerPos = thePlayer.transform.position;
+            Vector3 dir = playerPos - transform.position;
+            float angle = Mathf.Atan2( dir.y, dir.x );
+            float prevAngle = transform.eulerAngles.z;
+
+            transform.eulerAngles = new Vector3( 0, 0, 180 + Utilities.RadToDeg(angle) );
+            float newAngle = transform.eulerAngles.z;
+            mHealthBar.transform.RotateAround( transform.position, new Vector3( 0, 0, 1), prevAngle - newAngle );
+        }
 
         UpdateHealthBar();
     }

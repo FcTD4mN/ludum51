@@ -190,7 +190,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -236,8 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1ba62d9990e384aa8cd8e0a403a838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 100
+  mSpeed: 0
   mBaseDamage: 1
+  mFacesPlayer: 1
 --- !u!114 &4309400691547571352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +282,7 @@ MonoBehaviour:
   mMultiplierReloadTime: 2
   mMultiplierFireRate: 1
   mMultiplierProjectileSpeed: 1
+  mMultiplierProjectileCount: 1
 --- !u!1 &5053198058417598635
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +385,7 @@ MonoBehaviour:
   mMultiplierReloadTime: 1
   mMultiplierFireRate: 1
   mMultiplierProjectileSpeed: 1
+  mMultiplierProjectileCount: 1
 --- !u!1 &5053198058501138101
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,3 +488,4 @@ MonoBehaviour:
   mMultiplierReloadTime: 1
   mMultiplierFireRate: 1
   mMultiplierProjectileSpeed: 1
+  mMultiplierProjectileCount: 1

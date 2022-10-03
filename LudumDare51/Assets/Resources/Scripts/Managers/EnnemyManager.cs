@@ -35,12 +35,12 @@ public class EnnemyManager : MonoBehaviour
         }
     }
 
-    public void SpawnBoss1()
+    public void SpawnBoss( int number )
     {
-        GameObject area = GameObject.Find( "SpawnAreas/SpawnEnnemies/Boss1" );
+        GameObject area = GameObject.Find( "SpawnAreas/SpawnEnnemies/Boss" + number );
         Vector3 location = new Vector3( area.transform.position.x, area.transform.position.y, -1 );
 
-        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/Boss1");
+        GameObject ennemyPrefab = Resources.Load<GameObject>("Prefabs/Ennemies/Boss" + number);
         GameObject ennemy = GameObject.Instantiate( ennemyPrefab, location, Quaternion.Euler(0, 0, 0) );
         ennemy.GetComponent<Enemy>().Initialize();
         ennemy.GetComponent<Boss1AI>().Initialize();
