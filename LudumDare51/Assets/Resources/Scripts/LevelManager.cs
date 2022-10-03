@@ -120,8 +120,14 @@ public class LevelManager : MonoBehaviour
     // What happens if you run of out time (or die)
     public void Death(eDeathCause cause)
     {
+        // Clean Ennemies
+        GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        // Clean Projectiles
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
+
         // Pause le jeu
-        Time.timeScale = 0;
+        // Time.timeScale = 0;
+
         gameOverPanel.SetActive(true);
     }
 
@@ -133,14 +139,11 @@ public class LevelManager : MonoBehaviour
         int ennemyBasicCount = Math.Max(whichLevel + 2, 0);
         int ennemyShooterCount = Math.Max(whichLevel - 4, 0);
 
-        // Projectiles
-        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
-
         // Player
         Weapon playerWeapon = GameManager.mInstance.mThePlayer.GetComponent<Shooter>().GetWeapon();
         playerWeapon.Reset(); // This will just reload the gun, not reset the stats
 
-        if(reset)
+        if (reset)
             GameManager.mInstance.mThePlayer.Reset(); // This will reset all stats
 
         GameObject area = GameObject.Find("SpawnAreas/SpawnPlayer/" + whichLevel + "-Player");
@@ -149,10 +152,12 @@ public class LevelManager : MonoBehaviour
 
         // Ennemies
         GameManager.mInstance.mEnnemyManager.DestroyAllEnnemies();
+        // Projectiles
+        GameManager.mInstance.mProjectileManager.ClearAllProjectiles();
 
-        if( currentRoom % 10 == 0)
+        if (currentRoom % 10 == 0)
         {
-            GameManager.mInstance.mEnnemyManager.SpawnBoss( currentRoom / 10 );
+            GameManager.mInstance.mEnnemyManager.SpawnBoss(currentRoom / 10);
         }
         else
         {
@@ -163,11 +168,13 @@ public class LevelManager : MonoBehaviour
     public void Retry()
     {
         // Reset timer and hide death screen
-        gameOverPanel.SetActive(false);
-        ResetTimer();
+        // gameOverPanel.SetActive(false);
+        // ResetTimer();
+        // Time.timeScale = 1;
+        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
+        rL.LoadNextScene(SceneManager.GetActiveScene().name);
 
-        Time.timeScale = 1;
-        BuildRoom(currentRoom, true);
+        // BuildRoom(currentRoom, true);
     }
 
     // Current room finish
@@ -181,7 +188,7 @@ public class LevelManager : MonoBehaviour
         rL.FinishCurrentRoom();
 
         // Load Room Features
-        StartCoroutine(FinishRoomCoroutine(rL.transitionTime / 2));
+        StartCoroutine(FinishRoomCoroutine(rL.transitionTime));
     }
 
     // Show Card Panel
@@ -196,6 +203,7 @@ public class LevelManager : MonoBehaviour
 
     public void ChooseCard(int whichCard)
     {
+        Debug.Log("We chose a card!");
         // Equip the card
         mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
 
@@ -207,7 +215,7 @@ public class LevelManager : MonoBehaviour
         rL.LoadNextRoom();
 
         // Resume timer etc...
-        StartCoroutine(NextRoomCoroutine(rL.transitionTime / 2));
+        StartCoroutine(NextRoomCoroutine(rL.transitionTime));
     }
 
     void NextRoom()
@@ -218,6 +226,8 @@ public class LevelManager : MonoBehaviour
 
     private void FinishChapter()
     {
+        // Save data
+
         // Load menu scene - TODO
         // SceneManager.LoadScene("ChapterSelection");
     }
@@ -232,7 +242,7 @@ public class LevelManager : MonoBehaviour
 
         gStat.mLevel += 1;
         if (FileManager.WriteToFile("SaveGlobalData.json", gStat.ToJson()))
-            Debug.Log( "NoWarning" );
+            Debug.Log("NoWarning");
     }
 
     // Coroutines :
