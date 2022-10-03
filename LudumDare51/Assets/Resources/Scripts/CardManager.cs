@@ -19,7 +19,7 @@ public class CardManager : MonoBehaviour, ISaveable
     void OnEnable()
     {
         mCurrentDeckUI = new List<GameObject>();
-        // Should load from file 
+        // Should load from file
         mDeckOfCards = new List<Card>();
     }
 
@@ -43,13 +43,22 @@ public class CardManager : MonoBehaviour, ISaveable
     }
 
     // UI Side
-    public void CreateCardUI(GameObject canvas, LevelManager levelManager)
+    public void CreateCardUI( GameObject canvas, LevelManager levelManager, bool newChapter )
     {
         // Delete from UI first
         RemoveCardsUI();
 
-        // Generate Cards
-        Card[] cCards = SpawnCard();
+        Card[] cCards = null;
+        if( newChapter )
+        {
+            // TODO: Generate Special Cards
+            cCards = SpawnCard();
+        }
+        else
+        {
+            // Generate Cards
+            cCards = SpawnCard();
+        }
 
         // Create as many Prefabas as there is Cards
         int posX = -250;
@@ -72,7 +81,6 @@ public class CardManager : MonoBehaviour, ISaveable
             btn.onClick.AddListener(() => levelManager.ChooseCard(iCopy));
             mCurrentDeckUI.Add(card);
         }
-
     }
 
     private void RemoveCardsUI()

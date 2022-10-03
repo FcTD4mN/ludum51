@@ -226,11 +226,11 @@ public class PlayerController : MonoBehaviour
     {
         Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if (projectile == null)
+        if (projectile == null || projectile.mWeapon.mShooter == null)
             return;
 
         Shooter shooter = projectile.mWeapon.mShooter;
-        if( shooter.gameObject == null )
+        if( shooter.gameObject == null  || shooter == null )
             return;
 
         bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
