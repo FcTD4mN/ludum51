@@ -29,8 +29,7 @@ namespace Ludum51.Player
             Cooldown.BaseValue = 1;
             Zone.BaseValue = 1;
             Pierce.BaseValue = 0;
-
-            SyncStatsToShooter();
+            mPrevHP = Health.BaseValue;
         }
 
         void update()
@@ -50,9 +49,13 @@ namespace Ludum51.Player
         }
 
 
+        private float mPrevHP = 100f;
         public void SyncStatsToShooter()
         {
             GetComponent<Killable>().mBaseLife = Health.Value;
+            float increaseValue = Health.Value - mPrevHP;
+            GetComponent<Killable>().mLife += increaseValue;
+            mPrevHP = Health.Value;
             Shooter shooter = GetComponent<Shooter>();
 
             shooter.mMultiplierArea = Zone.Value;
@@ -60,7 +63,7 @@ namespace Ludum51.Player
             shooter.mMultiplierFireRate = WeaponSpeed.Value;
             shooter.mMultiplierProjectileCount = (int)Projectile.Value;
             shooter.mMultiplierProjectileSpeed = WeaponSpeed.Value;
-            shooter.mMultiplierReloadTime = Cooldown.Value;
+            shooter.mMultiplierReloadTime = Mathf.Max( 0, Cooldown.Value );
             shooter.GetWeapon().mPierce = Pierce.Value > 0;
 
             GetComponent<PlayerController>().UpdateGUI();

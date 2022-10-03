@@ -163,7 +163,10 @@ public class LevelManager : MonoBehaviour
         playerWeapon.Reset(); // This will just reload the gun, not reset the stats
 
         if (reset)
+        {
             GameManager.mInstance.mThePlayer.Reset(); // This will reset all stats
+            GameManager.mInstance.mThePlayer.GetComponent<Killable>().mLife = GameManager.mInstance.mThePlayer.GetComponent<Ludum51.Player.Player>().Health.Value;
+        }
 
         GameObject area = GameObject.Find("SpawnAreas/SpawnPlayer/" + whichLevel + "-Player");
         Debug.Assert(area != null);
