@@ -223,7 +223,8 @@ public class LevelManager : MonoBehaviour
             gStat.LoadFromJson(gameData);
 
         gStat.mLevel += 1;
-        if (FileManager.WriteToFile("SaveGlobalData.json", gStat.ToJson())) ;
+        if (FileManager.WriteToFile("SaveGlobalData.json", gStat.ToJson()))
+            Debug.Log( "NoWarning" );
     }
 
     // Coroutines :
