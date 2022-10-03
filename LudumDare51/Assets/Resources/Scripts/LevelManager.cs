@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
     private float mGameTime = 10;
 
     // Current Room Number
-    private int currentRoom = 1;
+    private int currentRoom = 10;
     static public int chapterNumber = 1;
 
     // UI Elements
@@ -133,12 +133,6 @@ public class LevelManager : MonoBehaviour
                 GameManager.mInstance.mThePlayer.transform.position = new Vector3(-10, -10, -1);
             });
         }
-
-
-
-        // Pause le jeu
-        // Time.timeScale = 0;
-
         gameOverPanel.SetActive(true);
     }
 
@@ -174,6 +168,10 @@ public class LevelManager : MonoBehaviour
         {
             GameManager.mInstance.mEnnemyManager.SpawnEnnemies(whichLevel, ennemyBasicCount, ennemyShooterCount);
         }
+
+
+        float xPos = (currentRoom - 1) * 28;
+        mainCamera.transform.position = new Vector3(xPos, 0f, -10f);
     }
 
     public void Retry()

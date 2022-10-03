@@ -7269,7 +7269,7 @@ PrefabInstance:
       objectReference: {fileID: 436749710}
     - target: {fileID: 3434198084284094564, guid: ce0448c4c694b53479156b78c74d304a, type: 3}
       propertyPath: transitionTime
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3434198084627660371, guid: ce0448c4c694b53479156b78c74d304a, type: 3}
       propertyPath: m_IsActive

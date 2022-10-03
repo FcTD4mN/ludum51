@@ -12863,6 +12863,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7692337702860261233, guid: 456bd2484d119a14eb10264557b534dc, type: 3}
+      propertyPath: mMultiplierDamage
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7692337702860261233, guid: 456bd2484d119a14eb10264557b534dc, type: 3}
+      propertyPath: mMultiplierFireRate
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 456bd2484d119a14eb10264557b534dc, type: 3}
 --- !u!1 &1206634319
