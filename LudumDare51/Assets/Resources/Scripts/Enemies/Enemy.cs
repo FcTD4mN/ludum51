@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour
     {
         Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if( projectile != null )
+        if( projectile != null && projectile.mWeapon.mShooter != null )
         {
             Shooter shooter = projectile.mWeapon.mShooter;
             bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
