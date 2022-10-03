@@ -5,11 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    private int mLevel;
+    private List<string> mWeapons;
 
     public void Start()
     {
-        FileManager.LoadFromFile("Assets\\Resources\\PersitentData", "weapons.json", out var json);
-        Debug.Log(json);
+        // Load Saved Data
+        if (FileManager.LoadFromFile("SaveGlobalData.json", out var gameData))
+        {
+            GameStat gStat = new GameStat();
+            gStat.LoadFromJson(gameData);
+            mLevel = gStat.mLevel;
+        }
+        else
+            mLevel = 1;
+
+        // Load list of weapons
+        // FileManager.LoadFromFile("Assets\\Resources\\PersitentData", "weapons.json", out var json);
+        // Debug.Log(json);
+
     }
 
     public void PlayGame()

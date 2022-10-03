@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Ludum51.Player;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -201,6 +202,24 @@ public class LevelManager : MonoBehaviour
     {
         currentRoom += 1;
         mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 28, 0f, -10f);
+    }
+
+    private void FinishChapter()
+    {
+        // Load menu scene - TODO
+        // SceneManager.LoadScene("ChapterSelection");
+    }
+
+    public void FinishRun()
+    {
+        // Level +1
+        GameStat gStat = new GameStat();
+        gStat.mLevel = 1;
+        if (FileManager.LoadFromFile("SaveGlobalData.json", out var gameData))
+            gStat.LoadFromJson(gameData);
+
+        gStat.mLevel += 1;
+        if (FileManager.WriteToFile("SaveGlobalData.json", gStat.ToJson())) ;
     }
 
     // Coroutines :
