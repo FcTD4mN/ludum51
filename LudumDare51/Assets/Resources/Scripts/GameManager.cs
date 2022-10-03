@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     // ======================================
     void OnEnable()
     {
+        Debug.Log( "Enable" );
         // If there is already an gamemanager instance
         if (GameManager.mInstance != null) { return; }
         mInstance = this;
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
         GameObject player = GameObject.Find("Player");
         mThePlayer = player.GetComponent<PlayerController>();
         Debug.Assert(mThePlayer && player, "Can't find player");
+        Debug.Log( "player.GetComponent<Ludum51.Player.Player>().Initialize();" );
         player.GetComponent<Ludum51.Player.Player>().Initialize();
         mThePlayer.Initialize();
 

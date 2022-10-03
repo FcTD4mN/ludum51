@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
         mShooter.SetWeapon( theWeapon );
 
         mHealthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
+        InitGUIVariables();
 
         ResetShooter();
         Reset();
@@ -235,7 +236,7 @@ public class PlayerController : MonoBehaviour
                 UpdateHealthBar();
                 if ( mKillable.IsDead() )
                 {
-                    PlayDeathAnimation(() =>
+                    PlayDeathAnimation( ()=>
                     {
                         gameObject.SetActive(false);
                         GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
@@ -248,6 +249,29 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    //========================================
+    // GUI
+    //========================================
+    private TextMeshProUGUI mLabelDamage;
+    private TextMeshProUGUI mLabelArea;
+    private TextMeshProUGUI mLabelWeaponSpeed;
+
+    private void InitGUIVariables()
+    {
+        mLabelDamage = GameObject.Find( "Canvas/InGamePanel/Stats/LabelDamage" ).GetComponent<TextMeshProUGUI>();
+        mLabelArea = GameObject.Find( "Canvas/InGamePanel/Stats/LabelArea" ).GetComponent<TextMeshProUGUI>();
+        mLabelWeaponSpeed = GameObject.Find( "Canvas/InGamePanel/Stats/LabelWeaponSpeed" ).GetComponent<TextMeshProUGUI>();
+    }
+
+    public void UpdateGUI()
+    {
+        Debug.Log( "GUI" );
+        mLabelDamage.text = "Damage: " + mShooter.GetWeapon().mBaseDamage * mShooter.mMultiplierDamage;
+        mLabelArea.text = "Area: " + mShooter.GetWeapon().mBaseArea * mShooter.mMultiplierArea;
+        mLabelWeaponSpeed.text = "Weapon Speed: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
     }
 
 }

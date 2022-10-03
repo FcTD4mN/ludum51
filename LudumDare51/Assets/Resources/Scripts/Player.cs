@@ -59,6 +59,8 @@ namespace Ludum51.Player
             shooter.mMultiplierProjectileCount = (int)Projectile.Value;
             shooter.mMultiplierProjectileSpeed = WeaponSpeed.Value;
             shooter.mMultiplierReloadTime = Cooldown.Value;
+
+            GetComponent<PlayerController>().UpdateGUI();
         }
     }
 
