@@ -9,7 +9,7 @@ public class SaveData
     [System.Serializable]
     public struct CardData
     {
-        public int id;
+        public string id;
         public int type;
         public int powerUpCategory;
         public float value;

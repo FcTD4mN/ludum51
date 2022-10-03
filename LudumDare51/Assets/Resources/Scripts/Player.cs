@@ -40,7 +40,6 @@ namespace Ludum51.Player
         public void pushCard(Card card)
         {
             PU.Equip(this, card);
-
         }
 
         public string getStat()

@@ -17,7 +17,7 @@ public class CardManager : MonoBehaviour, ISaveable
     private List<GameObject> mCurrentDeckUI;
     private int mNumberOfCards = 3;
 
-    void OnEnable()
+    public void Initialize()
     {
         mCurrentDeckUI = new List<GameObject>();
         // Should load from file
@@ -25,7 +25,7 @@ public class CardManager : MonoBehaviour, ISaveable
         mCardListGenerator = new CardList();
     }
 
-    private Card[] SpawnCard( bool special )
+    private Card[] SpawnCard(bool special)
     {
         // Generate new cards
         mCurrentChoice = new Card[mNumberOfCards];
@@ -44,13 +44,21 @@ public class CardManager : MonoBehaviour, ISaveable
         player.pushCard(mCurrentChoice[whichCard]);
     }
 
+    public void EquipDeckOfCards(List<Card> deckOfCards, Player player)
+    {
+        foreach (Card card in deckOfCards)
+        {
+            player.pushCard(card);
+        }
+    }
+
     // UI Side
-    public void CreateCardUI( GameObject canvas, LevelManager levelManager, bool newChapter )
+    public void CreateCardUI(GameObject canvas, LevelManager levelManager, bool newChapter)
     {
         // Delete from UI first
         RemoveCardsUI();
 
-        Card[] cCards = SpawnCard( newChapter );
+        Card[] cCards = SpawnCard(newChapter);
 
         // Create as many Prefabas as there is Cards
         int posX = -250;
@@ -102,16 +110,14 @@ public class CardManager : MonoBehaviour, ISaveable
 
     public void LoadFromSaveData(SaveData dataSet)
     {
-        foreach (Card card in mDeckOfCards)
+        foreach (SaveData.CardData item in dataSet.mDeckOfCards)
         {
-            card.LoadFromSaveData(dataSet);
+            Card cCard = new Card();
+            cCard.LoadFromSaveData(item);
+            mDeckOfCards.Add(cCard);
         }
 
-        // for (int i = 0; i < dataSet.mNumberOfCards; i++)
-        // {
-        //     Card cCard = new Card(i + 1);
-        //     cCard.LoadFromSaveData(dataSet);
-        // }
-
+        // Equip the player after loading cards
+        EquipDeckOfCards(mDeckOfCards, GameManager.mInstance.mPlayerObject.GetComponent<Player>());
     }
 }
