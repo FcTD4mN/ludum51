@@ -54,3 +54,6 @@ TagManager:
   - name: UIMenu
     uniqueID: 1428699719
     locked: 0
+  - name: Characters
+    uniqueID: 3376779007
+    locked: 0
