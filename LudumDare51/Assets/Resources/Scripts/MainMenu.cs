@@ -8,8 +8,9 @@ public class MainMenu : MonoBehaviour
     public void PlayGame()
     {
         // Make sure Scene are in the right order
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadNextScene();
     }
+
 
     public void QuitGame()
     {

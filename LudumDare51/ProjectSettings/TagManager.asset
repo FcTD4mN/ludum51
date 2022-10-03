@@ -51,3 +51,6 @@ TagManager:
   - name: Projectiles
     uniqueID: 2709784925
     locked: 0
+  - name: UIMenu
+    uniqueID: 1428699719
+    locked: 0

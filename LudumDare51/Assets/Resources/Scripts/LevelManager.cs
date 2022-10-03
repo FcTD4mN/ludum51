@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
     private GameObject mTimer;
 
     // Reference to Room Loader (Animation)
-    private GameObject RoomLoader;
+    private GameObject mRoomLoader;
     public bool mCardSelection;
 
     // keep a copy of the executing coroutine (timer)
@@ -44,31 +44,41 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     public void Initialize()
     {
+        // Load animation
+        mRoomLoader = GameObject.Find("RoomLoader");
+        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
+        rL.LoadNextRoom();
+
         // Retrieve main camera
         mainCamera = GameObject.Find("Main Camera");
         // Retrieve main camera
         mPlayer = GameObject.Find("Player");
 
-        // Retrieve GameObjects reference
-        RoomLoader = GameObject.Find("RoomLoader");
+        // Retrieve Card reference
         mCardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
         mCardSelection = false;
 
         // Retrieve UI Elements
         cardCanvas = GameObject.Find("CardCanvas");
         canvas = GameObject.Find("Canvas");
-        cardCanvas.SetActive(false);
         gameOverPanel = GameObject.Find("GameOverPanel").gameObject;
-        gameOverPanel.SetActive(false);
         mIgPanel = GameObject.Find("InGamePanel").gameObject;
+        cardCanvas.SetActive(false);
+        gameOverPanel.SetActive(false);
 
         // Init Timer
         mTimer = mIgPanel.transform.Find("Chrono").gameObject;
         mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(mGameTime);
 
-        // Start Timer Coroutine
-        UpdateTimer();
-        BuildRoom(currentRoom);
+        // Start Timer & Build room - One second after loading scene
+        StartCoroutine(Utilities.ExecuteAfter(1f, () =>
+        {
+            mGameTime = 10;
+            mTimer.GetComponent<TextMeshProUGUI>().text = Utilities.FormatSecondsToMinuteAndSeconds(Mathf.Round(mGameTime));
+            UpdateTimer();
+            BuildRoom(currentRoom);
+        }));
+
     }
 
     void FixedUpdate()
@@ -94,7 +104,7 @@ public class LevelManager : MonoBehaviour
                 UpdateTimer();
             }
             else
-                Death( eDeathCause.kTimeOut );
+                Death(eDeathCause.kTimeOut);
 
         });
         StartCoroutine(timerCoroutine);
@@ -108,7 +118,7 @@ public class LevelManager : MonoBehaviour
     }
 
     // What happens if you run of out time (or die)
-    public void Death( eDeathCause cause )
+    public void Death(eDeathCause cause)
     {
         // Pause le jeu
         Time.timeScale = 0;
@@ -154,7 +164,7 @@ public class LevelManager : MonoBehaviour
         StopCoroutine(timerCoroutine);
 
         // Load Animation
-        RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
+        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
         rL.FinishCurrentRoom();
 
         // Load Room Features
@@ -202,7 +212,7 @@ public class LevelManager : MonoBehaviour
         NextRoom();
 
         // Load Animation
-        RoomLoader rL = RoomLoader.GetComponent<RoomLoader>();
+        RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
         rL.LoadNextRoom();
 
         // Resume timer etc...
