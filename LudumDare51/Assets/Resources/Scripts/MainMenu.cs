@@ -5,22 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void PlayGame()
     {
         // Make sure Scene are in the right order
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadNextScene();
     }
 
     public void QuitGame()

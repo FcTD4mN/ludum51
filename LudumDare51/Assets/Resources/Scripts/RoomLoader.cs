@@ -1,41 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoomLoader : MonoBehaviour
 {
     public Animator transition;
     public float transitionTime;
 
+    // Use for IG transition
     public void FinishCurrentRoom()
     {
-        StartCoroutine(FinishRoomAnimation());
+        // Play animation
+        transition.SetTrigger("Start");
     }
 
     public void LoadNextRoom()
     {
-        StartCoroutine(NextRoomAnimation());
+        // Play animation
+        transition.SetTrigger("End");
     }
 
-    public IEnumerator FinishRoomAnimation()
+    /*
+    * Used for scene transition 
+    * Using next Scene order
+    */
+    public void LoadNextScene()
     {
-        // Pause game and Play animation
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
+    }
+
+    public IEnumerator LoadScene(int whichScene)
+    {
+        // Play animation
         transition.SetTrigger("Start");
 
         // Wait
         yield return new WaitForSeconds(transitionTime);
 
-        // Load next room (move camera)
+        // Load next scene
+        SceneManager.LoadScene(whichScene);
     }
 
-    public IEnumerator NextRoomAnimation()
+    /*
+    * Used for scene transition 
+    * Using next Scene order
+    */
+    public void LoadNextScene(string sName)
+    {
+        StartCoroutine(LoadScene(sName));
+    }
+
+    public IEnumerator LoadScene(string whichScene)
     {
         // Play animation
-        transition.SetTrigger("End");
+        transition.SetTrigger("Start");
 
         // Wait
         yield return new WaitForSeconds(transitionTime);
 
-        // Resume game
+        // Load next scene
+        SceneManager.LoadScene(whichScene);
     }
+
 }
