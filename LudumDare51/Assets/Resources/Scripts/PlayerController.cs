@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case 1:
                 theWeapon = new Knife( this, mShooter );
+                GetComponent<Ludum51.Player.Player>().Pierce.BaseValue = 1;
                 break;
         }
         mShooter.SetWeapon( theWeapon );
@@ -146,7 +147,7 @@ public class PlayerController : MonoBehaviour
     {
         movementInput = Vector2.zero;
         gameObject.SetActive(true);
-        mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.BaseValue;
+        // mKillable.mLife = GetComponent<Ludum51.Player.Player>().Health.Value;
         animator.Play("Player_Idle", 0);
 
         ResetShooter();
@@ -276,11 +277,11 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateGUI()
     {
-        mLabelDamage.text = "Damage: " + mShooter.GetWeapon().mBaseDamage * mShooter.mMultiplierDamage;
-        mLabelArea.text = "Area: " + mShooter.GetWeapon().mBaseArea * mShooter.mMultiplierArea;
-        mLabelWeaponSpeed.text = "FireRate: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
-        mLabelProjectileSpeed.text = "ProjectileSpeed: " + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
-        mLabelReloadTime.text = "ReloadTime: " + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
+        mLabelDamage.text           = "Damage: "            + mShooter.GetWeapon().mBaseDamage * mShooter.mMultiplierDamage;
+        mLabelArea.text             = "Area: "              + mShooter.GetWeapon().mBaseArea * mShooter.mMultiplierArea;
+        mLabelWeaponSpeed.text      = "FireRate: "          + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
+        mLabelProjectileSpeed.text  = "ProjectileSpeed: "   + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
+        mLabelReloadTime.text       = "ReloadTime: "        + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
 
         UpdateHealthBar();
     }

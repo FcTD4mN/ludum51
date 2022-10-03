@@ -39,8 +39,9 @@ public class GameManager : MonoBehaviour
         mPlayerObject = GameObject.Find("Player");
         mThePlayer = mPlayerObject.GetComponent<PlayerController>();
         Debug.Assert(mThePlayer && mPlayerObject, "Can't find player");
-        mThePlayer.Initialize();
         mPlayerObject.GetComponent<Ludum51.Player.Player>().Initialize();
+        mThePlayer.Initialize();
+        mPlayerObject.GetComponent<Ludum51.Player.Player>().SyncStatsToShooter();
 
 
         // Get and initialize all managers
