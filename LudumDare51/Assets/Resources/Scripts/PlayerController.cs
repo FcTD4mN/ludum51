@@ -38,18 +38,18 @@ public class PlayerController : MonoBehaviour
         mShooter = GetComponent<Shooter>();
         Debug.Assert(mShooter, "No mShooter");
 
-        Weapon theWeapon = new Rifle( this, mShooter );
-        switch( GameManager.mWeaponChoice )
+        Weapon theWeapon = new Rifle(this, mShooter);
+        switch (GameManager.mWeaponChoice)
         {
             case 0:
-                theWeapon = new Rifle( this, mShooter );
+                theWeapon = new Rifle(this, mShooter);
                 break;
             case 1:
-                theWeapon = new Knife( this, mShooter );
+                theWeapon = new Knife(this, mShooter);
                 GetComponent<Ludum51.Player.Player>().Pierce.BaseValue = 1;
                 break;
         }
-        mShooter.SetWeapon( theWeapon );
+        mShooter.SetWeapon(theWeapon);
 
         mHealthBar = GameObject.Find("Canvas/InGamePanel/HealthBar");
         InitGUIVariables();
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayDeathAnimation(Action onAnimationFinish)
     {
-        Utilities.StartAnim( this, animator, "Die", "Player_Death", onAnimationFinish );
+        Utilities.StartAnim(this, animator, "Die", "Player_Death", onAnimationFinish);
     }
 
 
@@ -193,6 +193,7 @@ public class PlayerController : MonoBehaviour
             mMouseWasDown = false;
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mShooter.TryShoot(transform.position, mousePosition);
+            GameManager.mInstance.mAudioManager.StartSound("laser", false);
         }
     }
 
@@ -225,21 +226,21 @@ public class PlayerController : MonoBehaviour
             return;
 
         Shooter shooter = projectile.mWeapon.mShooter;
-        if( shooter.gameObject == null  || shooter == null )
+        if (shooter.gameObject == null || shooter == null)
             return;
 
         bool shooterIsEnnemy = shooter.gameObject.GetComponent<Enemy>() != null;
 
-        if( shooterIsEnnemy || shooter.tag == "BossGun" )
+        if (shooterIsEnnemy || shooter.tag == "BossGun")
         {
             mKillable.Hit(projectile.mWeapon.mBaseDamage * projectile.mWeapon.mShooter.mMultiplierDamage);
             UpdateHealthBar();
-            if ( mKillable.IsDead() )
+            if (mKillable.IsDead())
             {
-                PlayDeathAnimation( ()=>
+                PlayDeathAnimation(() =>
                 {
                     gameObject.SetActive(false);
-                    GameManager.mInstance.mLevelManager.Death( LevelManager.eDeathCause.kDed );
+                    GameManager.mInstance.mLevelManager.Death(LevelManager.eDeathCause.kDed);
                 });
             }
 
@@ -262,26 +263,26 @@ public class PlayerController : MonoBehaviour
 
     private void InitGUIVariables()
     {
-        mLabelDamage = GameObject.Find( "Canvas/InGamePanel/Stats/LabelDamage" ).GetComponent<TextMeshProUGUI>();
-        mLabelArea = GameObject.Find( "Canvas/InGamePanel/Stats/LabelArea" ).GetComponent<TextMeshProUGUI>();
-        mLabelWeaponSpeed = GameObject.Find( "Canvas/InGamePanel/Stats/LabelWeaponSpeed" ).GetComponent<TextMeshProUGUI>();
-        mLabelProjectileSpeed = GameObject.Find( "Canvas/InGamePanel/Stats/LabelProjectileSpeed" ).GetComponent<TextMeshProUGUI>();
-        mLabelReloadTime = GameObject.Find( "Canvas/InGamePanel/Stats/LabelReloadTime" ).GetComponent<TextMeshProUGUI>();
+        mLabelDamage = GameObject.Find("Canvas/InGamePanel/Stats/LabelDamage").GetComponent<TextMeshProUGUI>();
+        mLabelArea = GameObject.Find("Canvas/InGamePanel/Stats/LabelArea").GetComponent<TextMeshProUGUI>();
+        mLabelWeaponSpeed = GameObject.Find("Canvas/InGamePanel/Stats/LabelWeaponSpeed").GetComponent<TextMeshProUGUI>();
+        mLabelProjectileSpeed = GameObject.Find("Canvas/InGamePanel/Stats/LabelProjectileSpeed").GetComponent<TextMeshProUGUI>();
+        mLabelReloadTime = GameObject.Find("Canvas/InGamePanel/Stats/LabelReloadTime").GetComponent<TextMeshProUGUI>();
 
-        Debug.Assert( mLabelDamage, "mLabelDamage" );
-        Debug.Assert( mLabelArea, "mLabelArea" );
-        Debug.Assert( mLabelWeaponSpeed, "mLabelWeaponSpeed" );
-        Debug.Assert( mLabelProjectileSpeed, "mLabelProjectileSpeed" );
-        Debug.Assert( mLabelReloadTime, "mLabelReloadTime" );
+        Debug.Assert(mLabelDamage, "mLabelDamage");
+        Debug.Assert(mLabelArea, "mLabelArea");
+        Debug.Assert(mLabelWeaponSpeed, "mLabelWeaponSpeed");
+        Debug.Assert(mLabelProjectileSpeed, "mLabelProjectileSpeed");
+        Debug.Assert(mLabelReloadTime, "mLabelReloadTime");
     }
 
     public void UpdateGUI()
     {
-        mLabelDamage.text           = "Damage: "            + mShooter.GetWeapon().mBaseDamage * mShooter.mMultiplierDamage;
-        mLabelArea.text             = "Area: "              + mShooter.GetWeapon().mBaseArea * mShooter.mMultiplierArea;
-        mLabelWeaponSpeed.text      = "FireRate: "          + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
-        mLabelProjectileSpeed.text  = "ProjectileSpeed: "   + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
-        mLabelReloadTime.text       = "ReloadTime: "        + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
+        mLabelDamage.text = "Damage: " + mShooter.GetWeapon().mBaseDamage * mShooter.mMultiplierDamage;
+        mLabelArea.text = "Area: " + mShooter.GetWeapon().mBaseArea * mShooter.mMultiplierArea;
+        mLabelWeaponSpeed.text = "FireRate: " + mShooter.GetWeapon().mBaseFireRatePerSec * mShooter.mMultiplierFireRate;
+        mLabelProjectileSpeed.text = "ProjectileSpeed: " + mShooter.GetWeapon().mBaseProjectileSpeed * mShooter.mMultiplierProjectileSpeed;
+        mLabelReloadTime.text = "ReloadTime: " + mShooter.GetWeapon().mBaseReloadTime * mShooter.mMultiplierReloadTime;
 
         UpdateHealthBar();
     }

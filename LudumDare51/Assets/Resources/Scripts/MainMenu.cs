@@ -7,9 +7,15 @@ public class MainMenu : MonoBehaviour
 {
     private int mLevel;
     private List<string> mWeapons;
+    private AudioManager mAudioManager;
 
     public void Start()
     {
+        // Load Audio Manager
+        mAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        Debug.Assert(mAudioManager != null);
+        mAudioManager.Initialize();
+
         // Load Saved Data
         if (FileManager.LoadFromFile("SaveGlobalData.json", out var gameData))
         {
@@ -28,6 +34,9 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
+        // Selection sound
+        mAudioManager.Play("selection");
+
         // Make sure Scene are in the right order
         GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadNextScene();
 
@@ -44,18 +53,24 @@ public class MainMenu : MonoBehaviour
 
     public void MenuSelectWeaponClicked_Rifle()
     {
+        // Selection sound
+        mAudioManager.Play("selection");
         GameManager.mWeaponChoice = 0;
         GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadNextScene();
     }
 
     public void MenuSelectWeaponClicked_Knife()
     {
+        // Selection sound
+        mAudioManager.Play("selection");
         GameManager.mWeaponChoice = 1;
         GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadNextScene();
     }
 
     public void MenuSelectWeaponClicked_Back()
     {
+        // Selection sound
+        mAudioManager.Play("selection");
         GameObject.Find("RoomLoader").GetComponent<RoomLoader>().LoadPreviousScene();
     }
 }

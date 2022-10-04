@@ -205,6 +205,9 @@ public class LevelManager : MonoBehaviour
         // Stop Timer
         StopCoroutine(timerCoroutine);
 
+        // Stop sound
+        GameManager.mInstance.mAudioManager.StopSound("laser");
+
         // Load Animation
         RoomLoader rL = mRoomLoader.GetComponent<RoomLoader>();
         rL.FinishCurrentRoom();
@@ -225,6 +228,9 @@ public class LevelManager : MonoBehaviour
 
     public void ChooseCard(int whichCard)
     {
+        // Load sound
+        GameManager.mInstance.mAudioManager.Play("selection");
+
         // Equip the card
         mCardManager.EquipCard(whichCard, mPlayer.GetComponent<Player>());
 
@@ -257,6 +263,10 @@ public class LevelManager : MonoBehaviour
     {
         // Save game data;
         GameManager.mInstance.SaveGame();
+
+        // Stop sound
+        AudioSource mainAudio = GameObject.Find("GameManager").GetComponent<AudioSource>();
+        mainAudio.Stop();
 
         // Load menu scene
         chapterNumber += 1;

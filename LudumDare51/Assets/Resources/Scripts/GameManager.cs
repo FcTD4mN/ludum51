@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public EnnemyManager mEnnemyManager;
     public LevelManager mLevelManager;
     public CardManager mCardManager;
+    public AudioManager mAudioManager;
 
     // Objects
     public PlayerController mThePlayer;
@@ -45,6 +46,10 @@ public class GameManager : MonoBehaviour
 
 
         // Get and initialize all managers
+        mAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        Debug.Assert(mAudioManager != null);
+        mAudioManager.Initialize();
+
         mProjectileManager = transform.Find("ProjectileManager")?.gameObject.GetComponent<ProjectileManager>();
         Debug.Assert(mProjectileManager != null);
         mProjectileManager.Initialize();
